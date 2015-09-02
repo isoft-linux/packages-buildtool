@@ -61,6 +61,7 @@ rm -rf $RPM_BUILD_ROOT
 %config(noreplace) %{_sysconfdir}/rpkg
 %{_datadir}/bash-completion/completions
 %{_bindir}/%{name}
+%{_mandir}/man1
 # For noarch packages: sitelib
 %{python_sitelib}/*
 
