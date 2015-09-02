@@ -9,7 +9,7 @@ Summary:        Utility for interacting with rpm+git packaging systems
 Group:          Applications/System
 License:        GPLv2+ and LGPLv2
 URL:            https://fedorahosted.org/rpkg
-Source0:        http://pkgs.isoft.zhcn.cc/repo/pkgs/rpkg/rpkg-%{version}.tar.gz/f3f2243bd6cb17892994723f4b011975/rpkg-%{version}.tar.gz
+Source0:        http://pkgs.isoft.zhcn.cc/repo/pkgs/rpkg/rpkg-%{version}.tar.gz/9b65de012587d0607d46b9a7a086acfc/rpkg-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 Requires:       python
