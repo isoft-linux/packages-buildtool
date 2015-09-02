@@ -9,7 +9,7 @@ Summary:        Utility for interacting with rpm+git packaging systems
 Group:          Applications/System
 License:        GPLv2+ and LGPLv2
 URL:            https://fedorahosted.org/rpkg
-Source0:        http://pkgs.isoft.zhcn.cc/repo/pkgs/rpkg/rpkg-%{version}.tar.gz/9b65de012587d0607d46b9a7a086acfc/rpkg-%{version}.tar.gz
+Source0:        http://pkgs.isoft.zhcn.cc/repo/pkgs/rpkg/rpkg-%{version}.tar.gz/6249462be46000ee938e0865f6456a16/rpkg-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 Requires:       python
@@ -78,7 +78,7 @@ rm -rf $RPM_BUILD_ROOT
 %doc COPYING COPYING-koji LGPL README
 # For noarch packages: sitelib
 %{python_sitelib}/pyrpkg
-#%{python_sitelib}/rpkg-%{version}-py?.?.egg-info
+%{python_sitelib}/rpkg-%{version}-py?.?.egg-info
 
 
 %changelog
