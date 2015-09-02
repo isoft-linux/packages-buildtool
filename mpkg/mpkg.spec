@@ -2,14 +2,14 @@
 %{!?python_sitelib: %global python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")}
 
 Name:           mpkg
-Version:        1.22
-Release:        1%{?dist}
+Version:        1.23
+Release:        1
 Summary:        Moses utility for working with dist-git
 
 Group:          Applications/System
 License:        GPLv2+
 URL:            http://fedorahosted.org/fedpkg
-Source0:        http://pkgs.isoft.zhcn.cc/repo/pkgs/mpkg/mpkg-%{version}.tar.gz/1a7e71096e7d1f3a375e62c085d568c7/mpkg-%{version}.tar.gz
+Source0:        http://pkgs.isoft.zhcn.cc/repo/pkgs/mpkg/mpkg-%{version}.tar.gz/c97475b96c58d02276b239ee73245803/mpkg-%{version}.tar.gz
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
