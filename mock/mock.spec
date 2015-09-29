@@ -1,0 +1,569 @@
+# next four lines substituted by autoconf
+%define major 1
+%define minor 2
+%define sub 12
+%define extralevel %{nil}
+%define release_version %{major}.%{minor}.%{sub}%{extralevel}
+
+%{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
+
+%if 1
+%global use_python3 1
+%global use_python2 0
+%else
+%global use_python3 0
+%global use_python2 1
+%endif
+
+%if %{use_python3}
+%global python_sitelib %{python3_sitelib}
+%else
+%global python_sitelib %{python_sitelib}
+%endif
+
+# mock group id allocate for Fedora
+%global mockgid  135
+
+Summary: Builds packages inside chroots
+Name: mock
+Version: %{release_version}
+Release: 2
+License: GPLv2+
+Source: https://git.fedorahosted.org/cgit/mock.git/snapshot/%{name}-%{version}.tar.xz
+URL: http://fedoraproject.org/wiki/Projects/Mock
+BuildArch: noarch
+%if 1
+Requires: yum >= 3.4.3-505
+%else
+Requires: yum >= 2.4
+%endif
+Requires: tar
+Requires: pigz
+Requires: usermode
+Requires: yum-utils
+Requires: createrepo_c
+%if 0%{?use_python2}
+Requires: pyliblzma
+%endif
+%if 0%{?rhel} != 6
+Requires: systemd
+%endif
+Requires(pre): shadow-utils
+Requires(post): coreutils
+BuildRequires: autoconf, automake
+%if 1
+BuildRequires: bash-completion
+%endif
+%if %{use_python3}
+Requires: python3
+Requires: python3-six
+Requires: python3-requests
+Requires: python3-rpm
+BuildRequires: python3-devel
+%else
+Requires: python-ctypes
+Requires: python-six
+Requires: python-requests
+Requires: python >= 2.6
+BuildRequires: python-devel
+%endif
+%if 1
+Recommends: dnf
+#Recommends: dnf-plugins-core
+Recommends: btrfs-progs
+%endif
+%if 1
+Requires: dnf
+#Requires: dnf-plugins-core
+Requires: btrfs-progs
+%endif
+%if 1
+Requires: btrfs-progs
+%endif
+
+
+%description
+Mock takes an SRPM and builds it in a chroot.
+
+%package scm
+Summary: Mock SCM integration module
+Requires: %{name} = %{version}-%{release}
+Requires: cvs
+Requires: git
+Requires: subversion
+Requires: tar
+
+%description scm
+Mock SCM integration module.
+
+%package lvm
+Summary: LVM plugin for mock
+Requires: %{name} = %{version}-%{release}
+Requires: lvm2
+
+%description lvm
+Mock plugin that enables using LVM as a backend and support creating snapshots
+of the buildroot.
+
+%prep
+%setup -q
+%if 0%{?rhel} == 6
+sed -i "s|^USE_NSPAWN = True|USE_NSPAWN = False|" py/mockbuild/util.py
+%endif
+%if %{use_python3}
+sed -i 's/AM_PATH_PYTHON/AM_PATH_PYTHON([3])/' configure.ac
+for file in py/mock.py py/mockchain.py; do
+  sed -i 1"s|#!/usr/bin/python |#!/usr/bin/python3 |" $file
+done
+%endif
+
+%build
+autoreconf -vif
+%configure
+make
+sed -i '1,$s/1.2.12/%{version}/' docs/mock.1
+sed -i '1,$s/1.2.12/%{version}/' docs/mockchain.1
+
+%install
+rm -rf $RPM_BUILD_ROOT
+make DESTDIR=$RPM_BUILD_ROOT install
+mkdir -p $RPM_BUILD_ROOT/var/lib/mock
+mkdir -p $RPM_BUILD_ROOT/var/cache/mock
+ln -s consolehelper $RPM_BUILD_ROOT/usr/bin/mock
+
+echo "%defattr(0644, root, mock)" > %{name}.cfgs
+find $RPM_BUILD_ROOT%{_sysconfdir}/mock -name "*.cfg" \
+    | sed -e "s|^$RPM_BUILD_ROOT|%%config(noreplace) |" >> %{name}.cfgs
+
+# just for %%ghosting purposes
+#ln -s fedora-rawhide-x86_64.cfg $RPM_BUILD_ROOT%{_sysconfdir}/mock/default.cfg
+
+if [ -d $RPM_BUILD_ROOT%{_datadir}/bash-completion ]; then
+    echo %{_datadir}/bash-completion/completions/mock >> %{name}.cfgs
+    echo %{_datadir}/bash-completion/completions/mockchain >> %{name}.cfgs
+elif [ -d $RPM_BUILD_ROOT%{_sysconfdir}/bash_completion.d ]; then
+    echo %{_sysconfdir}/bash_completion.d/mock >> %{name}.cfgs
+fi
+
+%if 0%{?rhel} == 6
+    # can be removed when yum-utils >= 1.1.31 lands in el6
+    echo "config_opts['plugin_conf']['package_state_enable'] = False" >> $RPM_BUILD_ROOT%{_sysconfdir}/mock/site-defaults.cfg
+    echo "config_opts['use_nspawn'] = False" >> $RPM_BUILD_ROOT%{_sysconfdir}/mock/site-defaults.cfg
+%endif
+%if 1
+    echo "config_opts['yum_command'] = '/usr/bin/yum-deprecated'" >> $RPM_BUILD_ROOT%{_sysconfdir}/mock/site-defaults.cfg
+%endif
+%pre
+
+# check for existence of mock group, create it if not found
+getent group mock > /dev/null || groupadd -f -g %mockgid -r mock
+exit 0
+
+%post
+
+# fix cache permissions from old installs
+chmod 2775 %{_localstatedir}/cache/%{name}
+
+if [ -s /etc/os-release ]; then
+    # fedora and rhel7
+    if grep -Fq Rawhide /etc/os-release; then
+        ver=rawhide
+    else
+        ver=$(source /etc/os-release && echo $VERSION_ID | cut -d. -f1 | grep -o '[0-9]\+')
+    fi
+else
+    # rhel6 or something obsure, use buildtime version
+    ver=%{?rhel}%{?fedora}
+fi
+mock_arch=$(python -c "import rpmUtils.arch; baseArch = rpmUtils.arch.getBaseArch(); print baseArch")
+# cfg=%{?fedora:fedora}%{?rhel:epel}-$ver-${mock_arch}.cfg
+# [ -e %{_sysconfdir}/%{name}/$cfg ] || exit -2
+# if [ "$(readlink %{_sysconfdir}/%{name}/default.cfg)" != "$cfg" ]; then
+#   ln -s $cfg %{_sysconfdir}/%{name}/default.cfg 2>/dev/null || ln -s -f $cfg %{_sysconfdir}/%{name}/default.cfg.rpmnew
+# fi
+:
+
+%files -f %{name}.cfgs
+%defattr(-, root, root)
+
+# executables
+%{_bindir}/mock
+%{_bindir}/mockchain
+%attr(0755, root, root) %{_sbindir}/mock
+
+# python stuff
+%{python_sitelib}/*
+%exclude %{python_sitelib}/mockbuild/scm.*
+%exclude %{python_sitelib}/mockbuild/plugins/lvm_root.*
+
+# config files
+%dir  %{_sysconfdir}/%{name}
+%ghost %config(noreplace,missingok) %{_sysconfdir}/%{name}/default.cfg
+%config(noreplace) %{_sysconfdir}/%{name}/*.ini
+%config(noreplace) %{_sysconfdir}/pam.d/%{name}
+%config(noreplace) %{_sysconfdir}/security/console.apps/%{name}
+
+# gpg keys
+%dir %{_sysconfdir}/pki/mock
+%config(noreplace) %{_sysconfdir}/pki/mock/*
+
+# docs
+%{_mandir}/man1/mock.1*
+%{_mandir}/man1/mockchain.1*
+%doc ChangeLog
+
+# cache & build dirs
+%defattr(0775, root, mock, 02775)
+%dir %{_localstatedir}/cache/mock
+%dir %{_localstatedir}/lib/mock
+
+%files scm
+%{python_sitelib}/mockbuild/scm.py*
+
+%files lvm
+%{python_sitelib}/mockbuild/plugins/lvm_root.*
+
+%changelog
+* Tue Jul 14 2015 clark Williams <williams@redhat.com> - 1.2.12-1
+- from Dennis Gilmore <dennis@ausil.us>:
+  - setup support so loopback devices can work [RHBZ#1245401]
+- from Miroslav Suchý <msuchy@redhat.com>:
+  - clarify path [RHBZ#1228751]
+  - document target_arch and legal_host_arches in site-defaults.cfg [RHBZ#1228751]
+  - document "yum.conf" in site-defaults.cfg [RHBZ#1228751]
+  - correctly specify requires of yum [RHBZ#1244475]
+  - bump up releasever in rawhide targets
+  - remove EOLed gpg keys
+  - add f23 configs
+  - removing EOLed f19 and f20 configs
+
+* Tue Jul 14 2015 clark Williams <williams@redhat.com> - 1.2.11-1
+- dropped code that does stray mount cleanup of chroot [RHBZ#1208092]
+- modified package_manager resolvedep cmd to use repoquery when dnf is installed
+
+* Tue Jun  2 2015 Miroslav Suchý <msuchy@redhat.com> - 1.2.10-1
+- do not require pyliblzma if using python3 [RHBZ#1227209]
+- add warning to site-defaults.cfg that assumeyes=1 is important [RHBZ#1225004]
+- sync comments in site-defaults.cfg with code [RHBZ#1224961]
+- check for dangling link of /etc/mtab [RHBZ#1224732]
+- Fix --install filename completion
+
+* Wed May 13 2015 Miroslav Suchý <msuchy@redhat.com> - 1.2.9-1
+- scm: do not keep copy of environ, this is now handled by uidmanager [RHBZ#1204395]
+- Add pm_request plugin
+- Drop lvm2-python-libs requires and enable lvm subpackage on el6
+- Use lvs instead of lvm python bindings
+- Unshare IPC ns only for chroot processes
+- Add missing flush in logOutput
+- Avoid infinite recursion in selinux plugin
+
+* Wed Apr 29 2015 Miroslav Suchý <msuchy@redhat.com> - 1.2.8-1
+- LVM plugin is removed on F22+ due RHBZ 1136366
+- allow the chroot's location to be configurable [RHBZ#452730]
+- send output of --chroot to log [RHBZ#1214178]
+- chroot_scan: implement "only_failed" option [RHBZ#1190763]
+- add comment why this previous commit was done [RHBZ#1192128]
+- use rpm macros instead of cmd option for --nocheck [RHBZ#1192128]
+- plugin options can be string if specified on command line [RHBZ#1193487]
+- root_cache: do not assume volatile root with tmpfs [RHBZ#1193487]
+- use CONFIG instead of CHROOT in help/man for --root option [RHBZ#1197131]
+- more clarification on --dnf-cmd/--yum-cmd [RHBZ#1211621]
+- scm correct the logic of exclude_vcs [RHBZ#1204240]
+- ignore missing files in ccache [RHBZ#1210569]
+- install buildsys-macros in el5 chroot [RHBZ#1213482]
+- remove forgotten print statement [RHBZ#1202845]
+- add a plugin that calls command (from the host) on the produced rpms.
+- save/restore os.environ when dropping/restoring Privs [RHBZ#1204395]
+- mock-scm pull tarball name from specfile instead of hardcoding [RHBZ#1204935]
+- clarify "--yum-cmd" / "--dnf-cmd" options [RHBZ#1211621]
+- return the SRPM name from do_buildsrpm (required for SCM builds) [1190450]
+- binding DNF cache directory with yum_cache [RHBZ#1176560]
+- suggest user to install dnf-plugins-core [RHBZ#1196248]
+- ignore btrfs errors on non-btrfs systems [RHBZ#1205564]
+- on F21- use hard deps instead of soft [RHBZ#1198769]
+- delete btrfs subvolumes on exit [RHBZ#1205564]
+- on python3 convert err from bytes to str [RHBZ#1211199]
+- on F22+ use yum-deprecated instead of yum [RHBZ#1211978]
+- if mountpoint is inside chroot, remove chroot part [RHBZ#1208299]
+- chmod directory only if we really created it [RHBZ#1209532]
+- port epel-5 configs to Python 3 [RHBZ#1204662]
+- use nosync only for package management and chroot init [RHBZ#1184964]
+- missing config file should not be fatal [RHBZ#1195749]
+- pass variable "name" [RHBZ#1194171]
+- correct chroot_scan configuration sample in site-defaults
+- install missing chroot_scan plugin
+- avoid creating resultdir as root
+
+
+* Fri Feb 13 2015 Miroslav Suchý <msuchy@redhat.com> - 1.2.7-1
+- add Fedora 22 configs
+- rawhide configs use DNF
+- touch should not truncate file [RHBZ#1188770]
+
+* Mon Feb  2 2015 Clark Williams <williams@redhat.com> - 1.2.6-1
+- fix broken build issue
+- From Mikhail Campos Guadamuz <Mikhail_Campos-Guadamuz@epam.com>:
+  - use default logging.ini if non-default does not exist [RHBZ#1187727]
+- From Michael Simacek <msimacek@redhat.com>:
+  - Update manpage regarding multiple arguments
+  - Take package arguments in update [RHBZ#1187136]
+- From Miroslav Suchý <msuchy@redhat.com>:
+  - reset LC before calling lvm commands [RHBZ#1185912]
+
+* Fri Jan 23 2015 Clark Williams <williams@redhat.com> - 1.2.5-1
+- mounts: do not mount /dev/shm or /dev/pts if internal setup false
+- actually package compress_logs plugin
+- use relative imports
+- touch /etc/os-release after install @buildsys-build [RHBZ#1183454]
+- parse /etc/os-release only if it exists and size is non-zero [RHBZ#1183454]
+
+* Fri Jan 16 2015 Miroslav Suchý <msuchy@redhat.com> - 1.2.4-1
+- each user have its own ccache cache [RHBZ#1168116]
+- man: write example for --chroot option
+- sort options in man page
+- sort command in man page
+- add Fedora 22 GPG keys
+- improve --resultdir part of man page [RHBZ#1181554]
+- allow the subsitution of resultdir into the yum.conf block [RHBZ#1125376]
+- do no print duplicities in bash completion
+- Fixed systemd-nspawn machine name collision [RHBZ#1174286]
+- do shell expansion on  --new-chroot --chroot [RHBZ#1174317]
+- log executing command after nspawn expansion
+- make sure that mockchain generate unique repoid for all repos [RHBZ#1179806]
+- workaround old python-six in EL7
+- Remove checking for chroot existence in --chroot
+- Exclude .bash_history and .bashrc from builddir cleanup
+- Ignore broken symlinks in chown_home_dir
+- create SCM files as non-privileg user [RHBZ#1178576]
+- With --no-clean, delete /builddir except build/SOURCES [RHBZ#1173126]
+- Man page formatting improvements
+- Move the pool size check to later time when pool already exists
+- Always use returnOutput in lvm plugin to get possible error output
+- put correct version in man page
+- Fix unicode characters in logs on Python 2 [RHBZ#1171707]
+- Added new option 'postinstall' [RHBZ#1168911]
+- Use keepcache=1 in yum.conf [RHBZ#1169126]
+- Warn user when LVM thin pool is filled up [RHBZ#1167761]
+- add missing max_metadata_age_days do site-defaults.cfg
+- add age_check to site-default.cfg
+- compress also logs created by package_state plugin
+
+* Thu Dec  4 2014 Miroslav Suchý <msuchy@redhat.com> - 1.2.3-1
+- fixed incorrect command construction in PackageManager:build_invocation [RHBZ#1170230]
+- completion: correctly expand --install [RHBZ#1168220]
+- copyin: when source is directory, then handle corner cases [RHBZ#1169051]
+- increase default for tmpfs to 768
+- check if key exist [RHBZ#476837]
+- Added tmpfs new option 'keep_mounted' [RHBZ#476837]
+- add 2 common tmpfs dirs to find_non_nfs_dir()
+- Added new option --symlink-dereference used with --buildsrpm [BZ# 1165242]
+- accept None as macro value in config [RHBZ#1165778]
+- Don't do yum update when --no-clean specified [RHBZ#1165716]
+- do not delete /buildir when --no-clean was set [RHBZ#483486]
+- bash completation for --copyin and --sources
+- bash_completion.d/mock: fix syntax error
+- Correct check for --source cmd option, single file can be used [RHBZ#1165213]
+- update BUGS part of man page
+- add missing options to man page
+
+* Tue Nov 18 2014 Miroslav Suchý <msuchy@redhat.com> - 1.2.2-1
+- add missing import [RHBZ#1165061]
+
+* Sat Nov 15 2014 Miroslav Suchý <msuchy@redhat.com> - 1.2.1-1
+- allow mockchain to accept path as config
+- end yum's installroot path with a slash [RHBZ#1160428]
+- add --mount option [RHBZ#1162637]
+- add some missing bash completation strings
+- run --shell as root with --new-chroot
+- Don't fail scrub when there's no pool [RHBZ#1162631]
+- Globbing and tilde expansion
+- move restoring priviledges to finally [RHBZ#1162720]
+- Remove "Buildroot must be already initialized" note
+- Add missing --print-root-path to manpage
+- Do not print ANSI escape characters into log [RHBZ#1163037]
+- in site-defaults.cfg initialize dictionary of plugins [RHBZ#1162595]
+- Disable empty names and values in config_opts[macros] [RHBZ#1160765]
+- Disable single macros in -D cmd option [RHBZ#1160765]
+- rpmbuild is in /usr/bin [RHBZ#1161112]
+- man page for --macro-file [RHBZ#1160326]
+- Added option [--macro-file] to support external rpm macros file [RHBZ#1160326]
+- Don't output installation/build output when redirected
+- Better log message for intial buildroot installation
+- Be more specific when installing configs
+- Install into correct sitelib when using Python 3
+- Fix nosync on aarch64
+- wrap all remaining getcwd() [RHBZ#1159300]
+- do not use rpm in %%post scriptlet [RHBZ#1131279]
+- Fix unclear legal host output [RHBZ#1159794]
+- allow running from directory, which is deleted [RHBZ#1159300]
+- create compress_logs plugin [RHBZ#1100923]
+- when default.cfg exists create default.cfg.rpmnew [RHBZ#1085308]
+- accept paths to target definition files [RHBZ#1126117]
+- set title bar in xterm [RHBZ#1126235]
+- pass --enablerepo/--disablerepo to yum in the same order as provided to mock [RHBZ#1154604]
+- Fix incorrect printing of binary strings on py3
+- Add missing Requires rpm-python3
+- Don't print Yum and build output when quiet
+- Prevent output being printed twice with --verbose (rhbz#1152971)
+- Fix printing non-ascii characters with output redirected (rhbz#1152952)
+- replace urlgrabber by python-requests
+- use python3 for Fedora22+
+- Don't print we're doing rpmbuild -bb, when it may not be true
+- 'prep' choice missing in short-circuit option parser
+- Don't execute prebuild in short-circuit mode
+
+* Thu Oct  9 2014 Miroslav Suchý <msuchy@redhat.com> - 1.2.0-1
+- update configs for secondary architecture (Dan Horák)
+- caching of buildroots using LVM (Michael Simacek)
+- add support for DNF (Michael Simacek)
+- initial porting to python3 (Michael Simacek)
+- new config option nosync (Michael Simacek)
+- add CentOS extra repository [BZ# 1108402]
+- correctly create default.cfg on arm [BZ# 1033786]
+- postpone loading of rpm after chroot is set [BZ# 1111147]
+- use systemd-nspawn instead of chroot [RHBZ# 1132762]
+- in --copyout do not fail on symlinks [BZ# 971474]
+- allow to short circuit to prep phase [BZ# 966985]
+
+* Fri Jul 18 2014 Clark Williams <williams@redhat.com> - 1.1.41-1
+- fix python 2.7 feature so we can run on rhel6
+
+* Thu Jul 17 2014 Clark Williams <williams@redhat.com> - 1.1.40-1
+- from Miroslav Suchý <msuchy@redhat.com>:
+  - mock: Revert "revert 7ec6a1e9d202ab56fb31c914dbf7516c045e56ab" [BZ# 1103239]
+  - configs: use final Centos 7 path in configs [BZ# 1108402]
+  - configs: fix typo in fedora-rawhide-armhfp config [BZ# 1108847]
+  - mockchain: use getuid() instead of getgid() [BZ# 1108265]
+  - configs: check gpg key of packages from Fedora, Centos, Epel
+  - plugins: disable package_state by default on el6
+  - make /etc/mtab symlink to /proc/self/mounts [BZ# 1116158]
+  - do not list pki files twice
+  - deploy etc/pki to buildroot
+- from Michael Simacek <msimacek@redhat.com>:
+  - mock: do not allow config scripts to regain root priviledges
+- from Igor Gnatenko <i.gnatenko.brain@gmail.com>:
+  - Add F21 configs
+  - Change releasever to 22 for rawhide
+
+* Wed May 21 2014 Clark Williams <williams@redhat.com> - 1.1.39-1
+- configs: update epel-7 koji repo to use correct URL
+- from Ken Dreyer <ktdryer@ktdryder.com>
+  - Use RHEL 7 RC mirrorlist URLs
+from Miroslav Suchý <msuchy@redhat.com>
+  - add support for subscription-manager (RHSM)
+  - expand tabs for better readablity
+  - cut of everything after decimal point, if there is some [BZ# 1098477]
+  - better code readablity
+  - clarify the log messages
+  - use metalink instead of mirrorlist in yum config
+  - set LC_MESSAGE to C before executing command [BZ# 519258]
+  - use ctypes.get_errno() instead of ctypes.c_int.in_dll(_libc, "errno")
+  - revert 7ec6a1e9d202ab56fb31c914dbf7516c045e56ab (python 2.4 workarounds)
+  - buildroot and %%clean is not needed for el6 and fedoras
+  - description should always end with dot
+  - remove shebang from mockbuild/mounts.py
+  - %%defattr is not needed since rpm 4.4
+  - remove el5 conditional
+  - use createrepo_c which is much faster
+  - whitespace fixes
+  - remove unused variables: 'username' and 'hdr'
+  - better logging of kernel version [BZ# 1048826]
+  - partially revert 9db6edb33cc34a450e762eb5d2bedf9067ebc419 [BZ# 1034805]
+  - teach mockchain about ftp [BZ# 1061776]
+from Jerry James <loganjerry@gmail.com>
+  - fix post scriptlet to deal with rawhide [BZ# 1083689]
+
+* Mon Mar 31 2014 Clark Williams <williams@redhat.com> - 1.1.38-1
+- revert commit 34d0b1d815e4 for quoting (breaks fedora-review)
+
+* Thu Mar 27 2014 Clark Williams <williams@redhat.com> - 1.1.37-2
+- fix el6 requires for yum-utils
+
+* Mon Mar 24 2014 Clark Williams <williams@redhat.com> - 1.1.37-1
+- fix thinko in test script for running configs
+- plugins: turn off package_state plugin by default
+- fix automake to use 'xz' compression
+- additional commits needed by scm commit
+- elevate privs when accessing the chroot rpmdb [BZ# 1051474]
+- quote --shell args like a shell [BZ# 966144]
+- from Tuomo Soini <tis@foobar.fi>
+  - Fix for race in directory creation [BZ# 1052045]
+- from Peter Jönsson <peter.jonsson@klarna.com>
+  - Add support for creating tarballs with scm data still inside
+- from Tomas Kopecek <tkopecek@redhat.com>
+  - internal_dev_setup option used consistently
+- from Dennis Gilmore <dennis@ausil.us>
+  - add rawhide aarch64 config
+  - remove sparc rawhide configs, she be dead
+- from Ville Skyttä <ville.skytta@iki.fi>
+  - Use $(mocketcdir) in install-data-hook instead of duplicating its value
+  - Use xz tarball to save a bit of space
+  - Clean up unused imports
+  - Install bash completion to proper dir with bash-completion 2
+  - Remove Fedora 18 configs
+  - Use install @foo instead of groupinstall foo in chroot_setup_cmd
+- from Rodrigo Dias Cruz <rodrigodc+redhatbugzilla@gmail.com>
+  -  fix scm problem with specfiles using rpm macros [BZ# 1056271]
+- from Tomas Kopecek <tkopecek@redhat.com>
+  - avoid undefined variable error in try/finally block [BZ# 1063275]
+
+* Wed Feb  5 2014 Clark Williams <williams@redhat.com> - 1.1.36-1
+- configs: first cut at epel-7 configs for x86_64 and ppc64
+- Add 'extra_chroot_dirs' config option
+- use repoquery --installroot to avoid yum cache corruption [BZ# 1029352 and 985681]
+- mockchain: avoid special characters in repoid [BZ# 1034805]
+- from Jon Disnard <jdisnard@gmail.com>:
+  - implement autoreconf call in build phase of mock rpm [BZ# 926154]
+  - fix --copyout by temporary drop and restore of privs [BZ# 1002142]
+- from Dennis Gilmore <dennis@ausil.us>:
+  - rawhide and f19/f18 is hardware floating point only for arm, drop the unneeded configs
+- from Yann Droneaud <yann@droneaud.fr>:
+  - pass root environment to repoquery calls for proxy config [BZ# 974499]
+- from Miroslav Suchý <msuchy@redhat.com>:
+  - add releasever config option to configs [BZ# 1056039]
+
+* Tue Nov  5 2013 Clark Williams <williams@redhat.com> - 1.1.35-1
+- modified %%post logic to set default config correctly
+
+* Tue Oct 29 2013 Clark Williams <williams@redhat.com> - 1.1.34-1
+- fixed specfile to include mass rebuild changelog entry
+- package_state: drop privs when writing available_packages data [BZ# 916685]
+- unconditionally update default.cfg on install [BZ# 858822]
+- attempt to make mock more EL5 friendly [BZ# 949616]
+- do not ignore missing dependencies [BZ# 955478]
+- set the group defined in chrootgid [BZ# 953519]
+- add the --nocheck option to mock [BZ# 1015790]
+- raise privs before deleting rpm db files in chroot [BZ# 973617]
+- clean up orphan processes even if chroot not cleaned [BZ# 972868]
+- do not remove the chroot builddir if not cleaning the chroot [BZ# 483486]
+- use root object environment in package_state plugin [BZ# 921221]
+- Pass values of --plugin-option through literal_eval [BZ# 1018359]
+- add default mode to mount in tmpfs plugin [BZ# 598257]
+- exit mockbuild.util.logOutput() when child process dies [BZ# 885405]
+
+* Wed Aug 21 2013 Clark Williams <williams@redhat.com> - 1.1.33-1
+- removed f17 configs
+- added f20 configs
+- fixed mockchain to use mock config default setup [BZ# 962573]
+- remove bogus lockfile dir in _setupDirs() [BZ# 894305]
+
+* Sat Aug 03 2013 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 1.1.32-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_20_Mass_Rebuild
+
+* Thu Apr 18 2013 Clark Williams <williams@redhat.com> - 1.1.32-1
+- fixed post scriptlet to use correct keyword to getent
+
+* Fri Apr 12 2013 Clark Williams <williams@redhat.com> - 1.1.31-1
+- removed f16 configurations files
+- selinux plugin: modify to catch yum-builddep in callback [BZ# 923927]
+- fix logging assumption in main mock file [BZ# 912624]
+- initial cut at chroot_scan plugin [BZ# 441090]
+- updated specfile to use static mock gid 135
+- from Marko Myllynen <myllynen@redhat.com>:
+  - separate scm module into separate package [BZ# 798367]
+  - scm plugin: Handle filenames w/ spaces in SCM/git  [BZ# 915264]
+  - scm plugin: if tar supports --exlcude-vcs use it [BZ#  824848]
+- from Shad L. Lords <slords@lordsfam.net>:
+  - mounts plugin: removed redundant '-t' specified for vfstype [BZ# 910857]
+- from Justin Lewis Salmon <jsalmon@cern.ch>:
+  - root cache plugin: add the --cache-alternations option [BZ# 905363]
