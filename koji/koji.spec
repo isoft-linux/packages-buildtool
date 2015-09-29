@@ -1,7 +1,7 @@
 %{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 Name: koji
-Version: 1.9.0
+Version: 1.9.1
 Release: 14
 License: LGPLv2 and GPLv2+
 # koji.ssl libs (from plague) are GPLv2+

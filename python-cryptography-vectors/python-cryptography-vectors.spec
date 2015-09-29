@@ -1,4 +1,5 @@
-%if 0%{?isoft} > 3
+#%if 0%{?isoft} > 3
+%if 0
 %global with_python3 1
 %endif
 
