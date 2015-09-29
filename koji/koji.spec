@@ -8,7 +8,7 @@ License: LGPLv2 and GPLv2+
 Summary: Build system tools
 Group: Applications/System
 URL: https://fedorahosted.org/koji
-Patch0: fedora-config.patch
+Patch0: isoft-config.patch
 
 Source: https://fedorahosted.org/released/koji/koji-%{version}.tar.bz2
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
