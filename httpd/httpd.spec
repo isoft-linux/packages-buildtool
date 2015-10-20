@@ -8,7 +8,7 @@
 Summary: Apache HTTP Server
 Name: httpd
 Version: 2.4.16
-Release: 5
+Release: 6 
 URL: http://httpd.apache.org/
 Source0: http://www.apache.org/dist/httpd/httpd-%{version}.tar.bz2
 Source1: index.html
@@ -72,6 +72,8 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
 BuildRequires: autoconf, perl, pkgconfig, findutils, xmlto
 BuildRequires: zlib-devel, lua-devel
 BuildRequires: apr-devel >= 1.5.0, apr-util-devel >= 1.5.0, pcre-devel >= 5.0, openldap-devel
+BuildRequires: apr-util-ldap
+
 BuildRequires: systemd-devel
 Requires: /etc/mime.types
 Obsoletes: httpd-suexec
@@ -475,17 +477,6 @@ rm -rf $RPM_BUILD_ROOT/etc/httpd/conf/{original,extra}
 
 %postun
 %systemd_postun
-
-# Trigger for conversion from SysV, per guidelines at:
-# https://fedoraproject.org/wiki/Packaging:ScriptletSnippets#Systemd
-%triggerun -- httpd < 2.2.21-5
-# Save the current service runlevel info
-# User must manually run systemd-sysv-convert --apply httpd
-# to migrate them to systemd targets
-/usr/bin/systemd-sysv-convert --save httpd.service >/dev/null 2>&1 ||:
-
-# Run these because the SysV package being removed won't do them
-/sbin/chkconfig --del httpd >/dev/null 2>&1 || :
 
 %posttrans
 test -f /etc/sysconfig/httpd-disable-posttrans || \
