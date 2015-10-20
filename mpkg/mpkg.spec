@@ -67,5 +67,3 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
-* Wed Jun 17 2015 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 1.20-2
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_23_Mass_Rebuild
