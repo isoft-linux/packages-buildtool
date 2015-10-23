@@ -2,7 +2,7 @@
 
 Name: koji
 Version: 1.9.1
-Release: 1
+Release: 2
 License: LGPLv2 and GPLv2+
 # koji.ssl libs (from plague) are GPLv2+
 Summary: Build system tools
@@ -224,6 +224,9 @@ rm -rf $RPM_BUILD_ROOT
 %systemd_postun kojira.service
 
 %changelog
+* Fri Oct 23 2015 xiaotian.wu@i-soft.com.cn - 1.9.1-2
+- rebuilt, just sync to koji server.
+
 * Wed Sep 9 2015 sulit <sulitsrc@163.com> - 1.9.0-14
 - Initial packaging for new release
 
