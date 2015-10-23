@@ -1,6 +1,6 @@
 Name: dinstaller
 Version: 1.0
-Release: 1
+Release: 2
 License: GPL2
 Vendor: iSoft
 Group: moses
