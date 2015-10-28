@@ -3,10 +3,9 @@
 
 Name:           rpkg
 Version:        1.38
-Release:        1
+Release:        2
 Summary:        Utility for interacting with rpm+git packaging systems
 
-Group:          Applications/System
 License:        GPLv2+ and LGPLv2
 URL:            https://fedorahosted.org/rpkg
 Source0:        http://pkgs.isoft.zhcn.cc/repo/pkgs/rpkg/rpkg-%{version}.tar.gz/6249462be46000ee938e0865f6456a16/rpkg-%{version}.tar.gz
@@ -33,7 +32,6 @@ A tool for managing RPM package sources in a git repository.
 
 %package -n pyrpkg
 Summary:        Python library for interacting with rpm+git
-Group:          Applications/Databases
 Requires:       GitPython >= 0.2.0
 Requires:       python-pycurl, koji
 Requires:       rpm-build, python-rpm
@@ -82,6 +80,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Mon Oct 26 2015 Cjacker <cjacker@foxmail.com> - 1.38-2
+- Rebuild for new 4.0 release
+
 * Wed Jul 15 2015 Pavol Babincak <pbabinca@redhat.com> - 1.36-1
 - container-build: support yum repos with --build-with=koji (pbabinca)
 - container-build: move --scratch option to koji group (pbabinca)

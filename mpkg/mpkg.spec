@@ -3,10 +3,9 @@
 
 Name:           mpkg
 Version:        1.23
-Release:        1
+Release:        2
 Summary:        Moses utility for working with dist-git
 
-Group:          Applications/System
 License:        GPLv2+
 URL:            http://fedorahosted.org/fedpkg
 Source0:        http://pkgs.isoft.zhcn.cc/repo/pkgs/mpkg/mpkg-%{version}.tar.gz/c97475b96c58d02276b239ee73245803/mpkg-%{version}.tar.gz
@@ -67,3 +66,6 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Mon Oct 26 2015 Cjacker <cjacker@foxmail.com> - 1.23-2
+- Rebuild for new 4.0 release
+

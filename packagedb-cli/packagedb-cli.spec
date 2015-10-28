@@ -1,6 +1,6 @@
 Name:           packagedb-cli
 Version:        2.8.2
-Release:        2
+Release:        3
 Summary:        A CLI for pkgdb
 
 License:        GPLv2+
@@ -65,6 +65,9 @@ It also allows you to orphan and/or retire your package(s).
 
 
 %changelog
+* Mon Oct 26 2015 Cjacker <cjacker@foxmail.com> - 2.8.2-3
+- Rebuild for new 4.0 release
+
 * Thu Jun 18 2015 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.8.2-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_23_Mass_Rebuild
 

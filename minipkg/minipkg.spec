@@ -1,9 +1,8 @@
 Name:           minipkg
 Version:        1.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Script to allow mpkg fetch to work
 
-Group:          Applications/System
 License:        GPLv2+
 URL:            http://git.isoft.zhcn.cc/version-4/%{name}
 Source0:	http://pkgs.isoft.zhcn.cc/repo/pkgs/%{name}/%{name}-%{version}.tar.gz/b010337ab6691029040839929e32fbf8/%{name}-%{version}.tar.gz
@@ -32,3 +31,6 @@ make PREFIX=%{buildroot}%{_prefix} install
 %{_bindir}/minipkg
 
 %changelog
+* Mon Oct 26 2015 Cjacker <cjacker@foxmail.com> - 1.1-2
+- Rebuild for new 4.0 release
+

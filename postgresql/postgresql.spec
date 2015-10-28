@@ -72,9 +72,8 @@
 Summary:	PostgreSQL client programs and libraries
 Name:		%{oname}
 Version:	9.4.4
-Release:	6
+Release:	7
 License:	PostgreSQL
-Group:		Applications/Databases
 Url:		http://www.postgresql.org/
 
 Source0:	ftp://ftp.postgresql.org/pub/source/v%{version}/postgresql-%{version}.tar.bz2
@@ -180,7 +179,6 @@ if you're installing the postgresql%{packageversion}-server package.
 
 %package libs
 Summary:	The shared libraries required for any PostgreSQL clients
-Group:		Applications/Databases
 Provides:	postgresql-libs
 
 %description libs
@@ -213,7 +211,6 @@ and maintain PostgreSQL databases.
 
 %package docs
 Summary:	Extra documentation for PostgreSQL
-Group:		Applications/Databases
 Provides:	postgresql-docs
 
 %description docs
@@ -225,7 +222,6 @@ includes HTML version of the documentation.
 
 %package contrib
 Summary:	Contributed source and binaries distributed with PostgreSQL
-Group:		Applications/Databases
 Requires:	%{name}%{?_isa} = %{version}-%{release}
 Requires:	%{name}-libs%{?_isa} = %{version}-%{release}
 Provides:	postgresql-contrib
@@ -236,7 +232,6 @@ included in the PostgreSQL distribution.
 
 %package devel
 Summary:	PostgreSQL development header files and libraries
-Group:		Development/Libraries
 Requires:	%{name}%{?_isa} = %{version}-%{release}
 Requires:	%{name}-libs%{?_isa} = %{version}-%{release}
 Provides:	postgresql-devel
@@ -252,7 +247,6 @@ to develop applications which will interact with a PostgreSQL server.
 %if %plperl
 %package plperl
 Summary:	The Perl procedural language for PostgreSQL
-Group:		Applications/Databases
 Requires:	%{name}-server%{?_isa} = %{version}-%{release}
 Requires:	perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
 %ifarch ppc ppc64
@@ -271,7 +265,6 @@ Install this if you want to write database functions in Perl.
 %if %plpython
 %package plpython
 Summary:	The Python procedural language for PostgreSQL
-Group:		Applications/Databases
 Requires: 	%{name}%{?_isa} = %{version}-%{release}
 Requires: 	%{name}-server%{?_isa} = %{version}-%{release}
 Obsoletes:	%{name}-pl
@@ -287,7 +280,6 @@ Install this if you want to write database functions in Python.
 %if %pltcl
 %package pltcl
 Summary:	The Tcl procedural language for PostgreSQL
-Group:		Applications/Databases
 Requires: 	%{name}%{?_isa} = %{version}-%{release}
 Requires: 	%{name}-server%{?_isa} = %{version}-%{release}
 Obsoletes:	%{name}-pl
@@ -302,7 +294,6 @@ for the backend.
 %if %test
 %package test
 Summary:	The test suite distributed with PostgreSQL
-Group:		Applications/Databases
 Requires:	%{name}-server%{?_isa} = %{version}-%{release}
 Requires:	%{name}-devel%{?_isa} = %{version}-%{release}
 Provides:	postgresql-test
@@ -1021,6 +1012,9 @@ rm -rf %{buildroot}
 %endif
 
 %changelog
+* Mon Oct 26 2015 Cjacker <cjacker@foxmail.com> - 9.4.4-7
+- Rebuild for new 4.0 release
+
 * Mon Sep 21 2015 sulit <sulitsrc@gmail.com> - 9.4.4-6
 - Initial packaging for new release
 

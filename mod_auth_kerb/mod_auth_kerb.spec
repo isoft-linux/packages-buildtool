@@ -8,11 +8,10 @@
 Summary: Kerberos authentication module for HTTP
 Name: mod_auth_kerb
 Version: 5.4
-Release: 32
+Release: 33
 # src/mod_auth_kerb.c is under 3-clause BSD, ASL 2.0 code is patched in (-s4u2proxy.patch)
 # src/mit-internals.h contains MIT-licensed code.
 License: BSD and MIT and ASL 2.0
-Group: System Environment/Daemons
 URL: http://modauthkerb.sourceforge.net/
 Source0: http://downloads.sourceforge.net/modauthkerb/%{name}-%{version}.tar.gz
 Source1: auth_kerb.conf
@@ -90,6 +89,9 @@ cp -p %{SOURCE2} .
 %attr(0700,apache,apache) %dir /run/httpd/krbcache
 
 %changelog
+* Mon Oct 26 2015 Cjacker <cjacker@foxmail.com> - 5.4-33
+- Rebuild for new 4.0 release
+
 * Mon Sep 21 2015 sulit <sulitsrc@gmail.com> - 5.4-33
 - Initial packaging for new release
 

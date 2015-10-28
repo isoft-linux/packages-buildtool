@@ -8,7 +8,7 @@
 Summary: Apache HTTP Server
 Name: httpd
 Version: 2.4.16
-Release: 6 
+Release: 7 
 URL: http://httpd.apache.org/
 Source0: http://www.apache.org/dist/httpd/httpd-%{version}.tar.bz2
 Source1: index.html
@@ -67,7 +67,6 @@ Patch56: httpd-2.4.4-mod_unique_id.patch
 Patch57: httpd-2.4.10-sigint.patch
 # Security fixes
 License: ASL 2.0
-Group: System Environment/Daemons
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
 BuildRequires: autoconf, perl, pkgconfig, findutils, xmlto
 BuildRequires: zlib-devel, lua-devel
@@ -93,7 +92,6 @@ The Apache HTTP Server is a powerful, efficient, and extensible
 web server.
 
 %package devel
-Group: Development/Libraries
 Summary: Development interfaces for the Apache HTTP server
 Obsoletes: secureweb-devel, apache-devel, stronghold-apache-devel
 Requires: apr-devel, apr-util-devel, pkgconfig
@@ -109,7 +107,6 @@ able to compile or develop additional modules for Apache, you need
 to install this package.
 
 %package manual
-Group: Documentation
 Summary: Documentation for the Apache HTTP server
 Requires: httpd = %{version}-%{release}
 Obsoletes: secureweb-manual, apache-manual
@@ -121,7 +118,6 @@ reference guide for the Apache HTTP server. The information can
 also be found at http://httpd.apache.org/docs/2.2/.
 
 %package filesystem
-Group: System Environment/Daemons
 Summary: The basic directory layout for the Apache HTTP server
 BuildArch: noarch
 Requires(pre): /usr/sbin/useradd
@@ -132,7 +128,6 @@ for the Apache HTTP server including the correct permissions
 for the directories.
 
 %package tools
-Group: System Environment/Daemons
 Summary: Tools for use with the Apache HTTP Server
 
 %description tools
@@ -140,7 +135,6 @@ The httpd-tools package contains tools which can be used with
 the Apache HTTP Server.
 
 %package -n mod_ssl
-Group: System Environment/Daemons
 Summary: SSL/TLS module for the Apache HTTP Server
 Epoch: 1
 BuildRequires: openssl-devel
@@ -157,7 +151,6 @@ server via the Secure Sockets Layer (SSL) and Transport Layer
 Security (TLS) protocols.
 
 %package -n mod_proxy_html
-Group: System Environment/Daemons
 Summary: HTML and XML content filters for the Apache HTTP Server
 Requires: httpd = 0:%{version}-%{release}, httpd-mmn = %{mmnisa}
 BuildRequires: libxml2-devel
@@ -169,7 +162,6 @@ The mod_proxy_html and mod_xml2enc modules provide filters which can
 transform and modify HTML and XML content.
 
 %package -n mod_ldap
-Group: System Environment/Daemons
 Summary: LDAP authentication modules for the Apache HTTP Server
 Requires: httpd = 0:%{version}-%{release}, httpd-mmn = %{mmnisa}
 Requires: apr-util-ldap
@@ -179,7 +171,6 @@ The mod_ldap and mod_authnz_ldap modules add support for LDAP
 authentication to the Apache HTTP Server.
 
 %package -n mod_session
-Group: System Environment/Daemons
 Summary: Session interface for the Apache HTTP Server
 Requires: httpd = 0:%{version}-%{release}, httpd-mmn = %{mmnisa}
 
@@ -654,6 +645,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_rpmconfigdir}/macros.d/macros.httpd
 
 %changelog
+* Mon Oct 26 2015 Cjacker <cjacker@foxmail.com> - 2.4.16-7
+- Rebuild for new 4.0 release
+
 * Mon Sep 21 2015 sulit <sulitsrc@gmail.com> - 2.4.16-5
 - update to 2.4.16-5
 

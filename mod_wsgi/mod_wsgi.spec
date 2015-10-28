@@ -9,9 +9,8 @@
 
 Name:           mod_wsgi
 Version:        4.4.8
-Release:        3
+Release:        4
 Summary:        A WSGI interface for Python web applications in Apache
-Group:          System Environment/Libraries
 License:        ASL 2.0
 URL:            http://modwsgi.org
 Source0:        http://github.srcurl.net/GrahamDumpleton/%{name}/%{version}/%{name}-%{version}.tar.gz
@@ -32,7 +31,6 @@ Requires:       httpd-mmn = %{_httpd_mmn}
 %if 0%{?with_python3}
 %package -n python3-%{name}
 Summary:        A WSGI interface for Python3 web applications in Apache
-Group:          System Environment/Libraries
 Requires:       httpd-mmn = %{_httpd_mmn}
 
 %description -n python3-%{name}
@@ -113,6 +111,9 @@ install -p -m 644 %{SOURCE1} $RPM_BUILD_ROOT%{_httpd_modconfdir}/10-wsgi.conf
 %endif
 
 %changelog
+* Mon Oct 26 2015 Cjacker <cjacker@foxmail.com> - 4.4.8-4
+- Rebuild for new 4.0 release
+
 * Mon Sep 21 2015 sulit <sulitsrc@gmail.com> - 4.4.8-3
 - Initial packaging for new release
 

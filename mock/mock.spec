@@ -27,7 +27,7 @@
 Summary: Builds packages inside chroots
 Name: mock
 Version: %{release_version}
-Release: 2
+Release: 3
 License: GPLv2+
 Source: https://git.fedorahosted.org/cgit/mock.git/snapshot/%{name}-%{version}.tar.xz
 URL: http://fedoraproject.org/wiki/Projects/Mock
@@ -224,6 +224,9 @@ mock_arch=$(python -c "import rpmUtils.arch; baseArch = rpmUtils.arch.getBaseArc
 %{python_sitelib}/mockbuild/plugins/lvm_root.*
 
 %changelog
+* Mon Oct 26 2015 Cjacker <cjacker@foxmail.com> - 1.2.12-3
+- Rebuild for new 4.0 release
+
 * Tue Jul 14 2015 clark Williams <williams@redhat.com> - 1.2.12-1
 - from Dennis Gilmore <dennis@ausil.us>:
   - setup support so loopback devices can work [RHBZ#1245401]

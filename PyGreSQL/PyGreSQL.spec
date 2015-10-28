@@ -1,9 +1,8 @@
 Name:		PyGreSQL
 Version:	4.1.1
-Release:	6
+Release:	7
 Summary:	A Python client library for PostgreSQL
 
-Group:		Applications/Databases
 URL:		http://www.pygresql.org/
 # Author states his intention is to dual license under PostgreSQL or Python
 # licenses --- this is not too clear from the current tarball documentation,
@@ -61,6 +60,9 @@ rm -rf $RPM_BUILD_ROOT
 %{python_sitearch}/*.egg-info
 
 %changelog
+* Mon Oct 26 2015 Cjacker <cjacker@foxmail.com> - 4.1.1-7
+- Rebuild for new 4.0 release
+
 * Mon Sep 21 2015 sulit <sulitsrc@gmail.com> - 4.1.1-6
 - Initial packaging for new release
 
