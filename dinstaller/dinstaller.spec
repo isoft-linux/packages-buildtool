@@ -1,7 +1,7 @@
 Name: dinstaller
 Summary:Installer Application
 Version: 1.0
-Release: 3
+Release: 4
 License: GPL2
 Vendor: iSoft
 Source0: dinstaller.tar.gz
@@ -39,6 +39,9 @@ glib-compile-schemas --allow-any-name usr/share/glib-2.0/schemas ||:
 %{_datadir}/*
 
 %changelog
+* Fri Oct 30 2015 sulit <sulitsrc@gmail.com.cn> - 1.0-2
+- modify postscript.tmpl for using kernel3 and kernel
+
 * Mon Oct 26 2015 Cjacker <cjacker@foxmail.com> - 1.0-2
 - Rebuild for new 4.0 release
 
