@@ -1,7 +1,7 @@
 Name: dinstaller
 Summary:Installer Application
 Version: 1.0
-Release: 9
+Release: 10
 License: GPL2
 Vendor: iSoft
 Source0: dinstaller.tar.gz
