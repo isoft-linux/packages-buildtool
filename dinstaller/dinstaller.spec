@@ -5,7 +5,7 @@ Release: 9
 License: GPL2
 Vendor: iSoft
 Source0: dinstaller.tar.gz
-Patch0: enable-repairdev.patch
+Patch0: postscript.patch
 BuildRequires: git cmake 
 BuildRequires: parted-devel 
 BuildRequires: qt5-qtbase-devel qt5-qttools-devel 
@@ -17,7 +17,7 @@ Requires: parted qt5-qtbase
 
 %prep
 %setup -n %{name}
-%patch0 -p1 -b enable-repairdev.patch
+%patch0 -p1 -b postscript.patch
 
 
 %build 
@@ -41,6 +41,9 @@ glib-compile-schemas --allow-any-name usr/share/glib-2.0/schemas ||:
 %{_datadir}/*
 
 %changelog
+* Tue Nov 03 2015 sulit <sulitsrc@gmail.com.cn> - 1.0-10
+- redo modify postscript.tmpl
+
 * Tue Nov 03 2015 sulit <sulitsrc@gmail.com.cn> - 1.0-5
 - add enable repairdev for postscript.tmpl
 

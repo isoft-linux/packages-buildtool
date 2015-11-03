@@ -1,0 +1,41 @@
+--- dinstaller/core/postscript.tmpl	2015-10-29 15:21:33.000000000 +0800
++++ dinstallern/core/postscript.tmpl	2015-11-03 17:13:06.853641902 +0800
+@@ -22,9 +22,9 @@
+ dracut -f /boot/initrd-${KER_VER0}.img $KER_VER0 >/dev/null ||:
+ 
+ # create kernel 4.2.x initrd
+-KER_VER1=`rpm -q kernel42 | sed -e 's/kernel42-//g' | sed -e 's/\.x86_64//'`
+-depmod -a $KER_VER1 >/dev/null ||:
+-dracut -f /boot/initrd-${KER_VER1}.img $KER_VER1 >/dev/null ||:
++#KER_VER1=`rpm -q kernel42 | sed -e 's/kernel42-//g' | sed -e 's/\.x86_64//'`
++#depmod -a $KER_VER1 >/dev/null ||:
++#dracut -f /boot/initrd-${KER_VER1}.img $KER_VER1 >/dev/null ||:
+ 
+ # create kernel 3.x initrd
+ KER_VER2=`rpm -q kernel3 | sed -e 's/kernel3-//g' | sed -e 's/\.x86_64//'`
+@@ -51,7 +51,7 @@
+     export GRUB_DISTRIBUTOR="iSoft Enterprise Desktop"
+     export GRUB_DISABLE_RECOVERY=true
+     grub-mkconfig > /boot/grub/grub.cfg
+-    sed -i "1,/$KER_VER0/s/$KER_VER0/$KER_VER1/" /boot/grub/grub.cfg;sed -i "1,/$KER_VER0/s/$KER_VER0/$KER_VER1/" /boot/grub/grub.cfg
++    sed -i "1,/$KER_VER0/s/$KER_VER0/$KER_VER2/" /boot/grub/grub.cfg;sed -i "1,/$KER_VER0/s/$KER_VER0/$KER_VER2/" /boot/grub/grub.cfg
+     #export GRUB_DISTRIBUTOR="iSoft Client OS"
+ 	#export GRUB_DISTRIBUTOR_zh_CN="普华桌面操作系统"
+     #export GRUB_DISABLE_RECOVERY=true
+@@ -103,7 +103,7 @@
+     export GRUB_DISTRIBUTOR="iSoft Enterprise Desktop"
+     export GRUB_DISABLE_RECOVERY=true
+     grub-mkconfig > /boot/grub/grub.cfg
+-    sed -i "1,/$KER_VER0/s/$KER_VER0/$KER_VER1/" /boot/grub/grub.cfg;sed -i "1,/$KER_VER0/s/$KER_VER0/$KER_VER1/" /boot/grub/grub.cfg
++    sed -i "1,/$KER_VER0/s/$KER_VER0/$KER_VER2/" /boot/grub/grub.cfg;sed -i "1,/$KER_VER0/s/$KER_VER0/$KER_VER2/" /boot/grub/grub.cfg
+ fi
+ 
+ 
+@@ -130,6 +130,7 @@
+ systemctl enable bluetooth
+ systemctl enable firstboot
+ systemctl enable isoft-update-daemon
++systemctl enable repairdev
+ 
+ TARGET_DISK=${ROOT_DEVICE//[0-9]*}
+ if `LC_ALL=C parted -m -s ${TARGET_DISK} p |awk -F: '$7 ~ /boot/ {exit 1}' `; then
