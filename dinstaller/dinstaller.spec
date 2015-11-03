@@ -1,10 +1,11 @@
 Name: dinstaller
 Summary:Installer Application
 Version: 1.0
-Release: 4
+Release: 8
 License: GPL2
 Vendor: iSoft
 Source0: dinstaller.tar.gz
+Patch0: enable-repairdev.patch
 BuildRequires: git cmake 
 BuildRequires: parted-devel 
 BuildRequires: qt5-qtbase-devel qt5-qttools-devel 
@@ -16,6 +17,7 @@ Requires: parted qt5-qtbase
 
 %prep
 %setup -n %{name}
+%patch0 -p1 -b enable-repairdev.patch
 
 
 %build 
@@ -39,6 +41,9 @@ glib-compile-schemas --allow-any-name usr/share/glib-2.0/schemas ||:
 %{_datadir}/*
 
 %changelog
+* Tue Nov 03 2015 sulit <sulitsrc@gmail.com.cn> - 1.0-5
+- add enable repairdev for postscript.tmpl
+
 * Fri Oct 30 2015 sulit <sulitsrc@gmail.com.cn> - 1.0-2
 - modify postscript.tmpl for using kernel3 and kernel
 
