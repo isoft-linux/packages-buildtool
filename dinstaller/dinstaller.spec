@@ -1,7 +1,7 @@
 Name: dinstaller
 Summary:Installer Application
 Version: 1.0
-Release: 10
+Release: 11
 License: GPL2
 Vendor: iSoft
 Source0: dinstaller.tar.gz
@@ -41,13 +41,16 @@ glib-compile-schemas --allow-any-name usr/share/glib-2.0/schemas ||:
 %{_datadir}/*
 
 %changelog
-* Tue Nov 03 2015 sulit <sulitsrc@gmail.com.cn> - 1.0-10
+* Thu Nov 05 2015 sulit <sulitsrc@gmail.com> - 1.0-11
+- put kernel and kernel42 to iso and use kernel as default boot kernel
+
+* Tue Nov 03 2015 sulit <sulitsrc@gmail.com> - 1.0-10
 - redo modify postscript.tmpl
 
-* Tue Nov 03 2015 sulit <sulitsrc@gmail.com.cn> - 1.0-5
+* Tue Nov 03 2015 sulit <sulitsrc@gmail.com> - 1.0-5
 - add enable repairdev for postscript.tmpl
 
-* Fri Oct 30 2015 sulit <sulitsrc@gmail.com.cn> - 1.0-2
+* Fri Oct 30 2015 sulit <sulitsrc@gmail.com> - 1.0-2
 - modify postscript.tmpl for using kernel3 and kernel
 
 * Mon Oct 26 2015 Cjacker <cjacker@foxmail.com> - 1.0-2

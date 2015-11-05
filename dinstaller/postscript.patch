@@ -1,24 +1,24 @@
 --- dinstaller/core/postscript.tmpl	2015-10-29 15:21:33.000000000 +0800
-+++ dinstallern/core/postscript.tmpl	2015-11-03 17:13:06.853641902 +0800
-@@ -22,9 +22,9 @@
- dracut -f /boot/initrd-${KER_VER0}.img $KER_VER0 >/dev/null ||:
- 
- # create kernel 4.2.x initrd
--KER_VER1=`rpm -q kernel42 | sed -e 's/kernel42-//g' | sed -e 's/\.x86_64//'`
--depmod -a $KER_VER1 >/dev/null ||:
--dracut -f /boot/initrd-${KER_VER1}.img $KER_VER1 >/dev/null ||:
-+#KER_VER1=`rpm -q kernel42 | sed -e 's/kernel42-//g' | sed -e 's/\.x86_64//'`
-+#depmod -a $KER_VER1 >/dev/null ||:
-+#dracut -f /boot/initrd-${KER_VER1}.img $KER_VER1 >/dev/null ||:
++++ dinstallern/core/postscript.tmpl	2015-11-05 10:09:17.962071468 +0800
+@@ -27,9 +27,9 @@
+ dracut -f /boot/initrd-${KER_VER1}.img $KER_VER1 >/dev/null ||:
  
  # create kernel 3.x initrd
- KER_VER2=`rpm -q kernel3 | sed -e 's/kernel3-//g' | sed -e 's/\.x86_64//'`
+-KER_VER2=`rpm -q kernel3 | sed -e 's/kernel3-//g' | sed -e 's/\.x86_64//'`
+-depmod -a $KER_VER2 >/dev/null ||:
+-dracut -f /boot/initrd-${KER_VER2}.img $KER_VER2 >/dev/null ||:
++#KER_VER2=`rpm -q kernel3 | sed -e 's/kernel3-//g' | sed -e 's/\.x86_64//'`
++#depmod -a $KER_VER2 >/dev/null ||:
++#dracut -f /boot/initrd-${KER_VER2}.img $KER_VER2 >/dev/null ||:
+ 
+ 
+ #Remember Run pwconv
 @@ -51,7 +51,7 @@
      export GRUB_DISTRIBUTOR="iSoft Enterprise Desktop"
      export GRUB_DISABLE_RECOVERY=true
      grub-mkconfig > /boot/grub/grub.cfg
 -    sed -i "1,/$KER_VER0/s/$KER_VER0/$KER_VER1/" /boot/grub/grub.cfg;sed -i "1,/$KER_VER0/s/$KER_VER0/$KER_VER1/" /boot/grub/grub.cfg
-+    sed -i "1,/$KER_VER0/s/$KER_VER0/$KER_VER2/" /boot/grub/grub.cfg;sed -i "1,/$KER_VER0/s/$KER_VER0/$KER_VER2/" /boot/grub/grub.cfg
++    #sed -i "1,/$KER_VER0/s/$KER_VER0/$KER_VER1/" /boot/grub/grub.cfg;sed -i "1,/$KER_VER0/s/$KER_VER0/$KER_VER1/" /boot/grub/grub.cfg
      #export GRUB_DISTRIBUTOR="iSoft Client OS"
  	#export GRUB_DISTRIBUTOR_zh_CN="普华桌面操作系统"
      #export GRUB_DISABLE_RECOVERY=true
@@ -27,7 +27,7 @@
      export GRUB_DISABLE_RECOVERY=true
      grub-mkconfig > /boot/grub/grub.cfg
 -    sed -i "1,/$KER_VER0/s/$KER_VER0/$KER_VER1/" /boot/grub/grub.cfg;sed -i "1,/$KER_VER0/s/$KER_VER0/$KER_VER1/" /boot/grub/grub.cfg
-+    sed -i "1,/$KER_VER0/s/$KER_VER0/$KER_VER2/" /boot/grub/grub.cfg;sed -i "1,/$KER_VER0/s/$KER_VER0/$KER_VER2/" /boot/grub/grub.cfg
++    #sed -i "1,/$KER_VER0/s/$KER_VER0/$KER_VER1/" /boot/grub/grub.cfg;sed -i "1,/$KER_VER0/s/$KER_VER0/$KER_VER1/" /boot/grub/grub.cfg
  fi
  
  
