@@ -1,7 +1,7 @@
 Name: dinstaller
 Summary:Installer Application
 Version: 1.0
-Release: 11
+Release: 12
 License: GPL2
 Vendor: iSoft
 Source0: dinstaller.tar.gz
@@ -41,6 +41,9 @@ glib-compile-schemas --allow-any-name usr/share/glib-2.0/schemas ||:
 %{_datadir}/*
 
 %changelog
+* Fri Nov 06 2015 wangming <ming.wang@i-soft.com.cn> - 1.0-12
+- New ui for 4.0.
+
 * Thu Nov 05 2015 sulit <sulitsrc@gmail.com> - 1.0-11
 - put kernel and kernel42 to iso and use kernel as default boot kernel
 
