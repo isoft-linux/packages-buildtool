@@ -27,7 +27,7 @@
 Summary: Builds packages inside chroots
 Name: mock
 Version: %{release_version}
-Release: 3
+Release: 4
 License: GPLv2+
 Source: https://git.fedorahosted.org/cgit/mock.git/snapshot/%{name}-%{version}.tar.xz
 URL: http://fedoraproject.org/wiki/Projects/Mock
@@ -224,6 +224,9 @@ mock_arch=$(python -c "import rpmUtils.arch; baseArch = rpmUtils.arch.getBaseArc
 %{python_sitelib}/mockbuild/plugins/lvm_root.*
 
 %changelog
+* Thu Nov 05 2015 Cjacker <cjacker@foxmail.com> - 1.2.12-4
+- Rebuild with python 3.5
+
 * Mon Oct 26 2015 Cjacker <cjacker@foxmail.com> - 1.2.12-3
 - Rebuild for new 4.0 release
 

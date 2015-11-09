@@ -9,7 +9,7 @@
 
 Name:           mod_wsgi
 Version:        4.4.8
-Release:        4
+Release:        5
 Summary:        A WSGI interface for Python web applications in Apache
 License:        ASL 2.0
 URL:            http://modwsgi.org
@@ -111,6 +111,9 @@ install -p -m 644 %{SOURCE1} $RPM_BUILD_ROOT%{_httpd_modconfdir}/10-wsgi.conf
 %endif
 
 %changelog
+* Thu Nov 05 2015 Cjacker <cjacker@foxmail.com> - 4.4.8-5
+- Rebuild with python 3.5
+
 * Mon Oct 26 2015 Cjacker <cjacker@foxmail.com> - 4.4.8-4
 - Rebuild for new 4.0 release
 
