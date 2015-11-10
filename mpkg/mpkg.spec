@@ -1,40 +1,31 @@
 # sitelib for noarch packages, sitearch for others (remove the unneeded one)
 %{!?python_sitelib: %global python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")}
+%define checksum 7db1ceb24d83c2e8b184fbf812e7cff8
 
 Name:           mpkg
-Version:        1.23
-Release:        2
+Version:        1.24
+Release:        1
 Summary:        Moses utility for working with dist-git
 
 License:        GPLv2+
 URL:            http://fedorahosted.org/fedpkg
-Source0:        http://pkgs.isoft.zhcn.cc/repo/pkgs/mpkg/mpkg-%{version}.tar.gz/c97475b96c58d02276b239ee73245803/mpkg-%{version}.tar.gz
+Source0:	http://pkgs.isoft.zhcn.cc/repo/pkgs/%{name}/%{name}-%{version}.tar.gz/%{checksum}/%{name}-%{version}.tar.gz
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 Requires:       pyrpkg >= 1.33
 Requires:       python-pycurl, koji
-#Requires:      python-fedora, redhat-rpm-config, bodhi-client
 Requires:       packagedb-cli > 2.2
-#Requires:      fedora-cert
 Requires:       packagedb-cli
-%if 0%{?rhel} == 5 || 0%{?rhel} == 4
-Requires:       python-kitchen
-%endif
 
 BuildArch:      noarch
 BuildRequires:  python-devel, python-setuptools
 # We br these things for man page generation due to imports
 BuildRequires:  pyrpkg
-#BuildRequires:  fedora-cert
-# This until fedora-cert gets fixed
 BuildRequires:  packagedb-cli > 2.2
-#BuildRequires:  python-fedora
-
 
 %description
 Provides the fedpkg command for working with dist-git
-
 
 %prep
 %setup -q
@@ -64,8 +55,9 @@ rm -rf $RPM_BUILD_ROOT
 # For noarch packages: sitelib
 %{python_sitelib}/*
 
-
 %changelog
+* Tue Nov 10 2015 xiaotian.wu@i-soft.com.cn - 1.24-1
+- new version, add search command.
+
 * Mon Oct 26 2015 Cjacker <cjacker@foxmail.com> - 1.23-2
 - Rebuild for new 4.0 release
-
