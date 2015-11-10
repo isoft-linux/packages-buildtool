@@ -47,7 +47,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root,-)
-%doc COPYING README
+%doc COPYING README.md
 %config(noreplace) %{_sysconfdir}/rpkg
 %{_datadir}/bash-completion/completions
 %{_bindir}/%{name}
