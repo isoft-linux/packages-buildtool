@@ -1,11 +1,11 @@
 Name: dinstaller
 Summary:Installer Application
 Version: 1.0
-Release: 12
+Release: 13
 License: GPL2
 Vendor: iSoft
 Source0: dinstaller.tar.gz
-Patch0: postscript.patch
+Patch0: create-kernel-initrd-4.3-and-4.2.patch
 BuildRequires: git cmake 
 BuildRequires: parted-devel 
 BuildRequires: qt5-qtbase-devel qt5-qttools-devel 
@@ -41,6 +41,9 @@ glib-compile-schemas --allow-any-name usr/share/glib-2.0/schemas ||:
 %{_datadir}/*
 
 %changelog
+* Wed Nov 11 2015 wangming <ming.wang@i-soft.com.cn> - 1.0-13
+- Create home mount point can not with type vfat. Optimize postscript.
+
 * Fri Nov 06 2015 wangming <ming.wang@i-soft.com.cn> - 1.0-12
 - New ui for 4.0.
 

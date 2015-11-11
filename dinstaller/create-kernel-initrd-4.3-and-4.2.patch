@@ -1,0 +1,18 @@
+--- dinstaller/core/postscript.tmpl	2015-11-11 20:05:02.063716102 +0800
++++ dinstaller/core/postscript.tmpl	2015-11-11 20:15:39.831742905 +0800
+@@ -15,6 +15,15 @@
+ 
+ # ************************************************************
+ # ***create kernel
++# create kernel 4.3.x initrd
++KER_VER0=`rpm -q kernel | sed -e 's/kernel-//g' | sed -e 's/\.x86_64//'`
++depmod -a $KER_VER0 >/dev/null ||:
++dracut -f /boot/initrd-${KER_VER0}.img $KER_VER0 >/dev/null ||:
++
++# create kernel 4.2.x initrd
++KER_VER1=`rpm -q kernel42 | sed -e 's/kernel42-//g' | sed -e 's/\.x86_64//'`
++depmod -a $KER_VER1 >/dev/null ||:
++dracut -f /boot/initrd-${KER_VER1}.img $KER_VER1 >/dev/null ||:
+ 
+ # Remember Run pwconv
+ pwconv
