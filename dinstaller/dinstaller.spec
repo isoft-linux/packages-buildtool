@@ -1,7 +1,7 @@
 Name: dinstaller
 Summary:Installer Application
 Version: 1.0
-Release: 14
+Release: 15
 License: GPL2
 Vendor: iSoft
 Source0: dinstaller.tar.gz
@@ -41,6 +41,9 @@ glib-compile-schemas --allow-any-name usr/share/glib-2.0/schemas ||:
 %{_datadir}/*
 
 %changelog
+* Fri Nov 20 2015 wangming <ming.wang@i-soft.com.cn> - 1.0-15
+- Fixed size.
+
 * Fri Nov 20 2015 sulit <sulitsrc@gmail.com> - 1.0-14
 - modify baloo_file.desktop for new os, because baloo_file
 - is disabled in live-cd.
