@@ -1,12 +1,13 @@
 Name: dinstaller
 Summary:Installer Application
 Version: 1.0
-Release: 18
+Release: 19
 License: GPL2
 Vendor: iSoft
 Source0: dinstaller.tar.gz
 Patch0: create-kernel-initrd-4.3-and-4.2.patch
 Patch1: enable_isoftapp.patch
+Patch2: init_rpmdb.patch
 BuildRequires: git cmake 
 BuildRequires: parted-devel 
 BuildRequires: qt5-qtbase-devel qt5-qttools-devel 
@@ -18,9 +19,9 @@ Requires: parted qt5-qtbase
 
 %prep
 %setup -n %{name}
-%patch0 -p1 -b postscript.patch
-%patch1 -p1 -b enable_isoftapp.patch
-
+%patch0 -p1
+%patch1 -p1
+%patch2 -p1
 
 %build 
 cmake . -DCMAKE_INSTALL_PREFIX=/usr
@@ -43,6 +44,9 @@ glib-compile-schemas --allow-any-name usr/share/glib-2.0/schemas ||:
 %{_datadir}/*
 
 %changelog
+* Fri Nov 20 2015 sulit <sulitsrc@gmail.com> - 1.0-19
+- add init-rpmdb patch
+
 * Fri Nov 20 2015 sulit <sulitsrc@gmail.com> - 1.0-18
 - add enable-isoftapp patch
 

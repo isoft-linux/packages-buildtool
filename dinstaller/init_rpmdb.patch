@@ -1,0 +1,12 @@
+--- dinstaller/core/postscript.tmpl	2015-11-23 14:03:12.830839436 +0800
++++ dinstallern/core/postscript.tmpl	2015-11-23 16:43:54.060409589 +0800
+@@ -13,6 +13,9 @@
+ # arch=`uname -m`
+ # BOOT_PART=""
+ 
++# init rpm db
++rpm --initdb
++
+ # ************************************************************
+ # *** create kernel
+ # create kernel 4.3.x initrd
