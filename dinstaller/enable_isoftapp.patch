@@ -1,0 +1,9 @@
+--- dinstaller/core/postscript.tmpl	2015-11-23 13:02:15.808002481 +0800
++++ dinstallern/core/postscript.tmpl	2015-11-23 13:03:04.311000319 +0800
+@@ -92,3 +92,6 @@
+ else
+     rpm -e dinstaller
+ fi
++
++# enable /usr/lib/rpm/isoft/macros %_isoftapp 1
++sed -e 's/\(%_isoftapp.*\)0/\1 1/' -i /usr/lib/rpm/isoft/macros
