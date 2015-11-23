@@ -1,7 +1,7 @@
 --- dinstaller/core/postscript.tmpl	2015-11-11 20:05:02.000000000 +0800
 +++ dinstallern/core/postscript.tmpl	2015-11-20 15:29:15.908422699 +0800
 @@ -47,6 +47,9 @@
- # ***config system environment and system control
+ # *** config system environment and system control
  test -f /etc/cups/cups-file.conf && sed -i 's/SystemGroup sys root/SystemGroup sys root users/' /etc/cups/cups-file.conf 
  
 +# modify /etc/xdg/autostart/baloo_file.desktop for new os

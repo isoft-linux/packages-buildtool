@@ -3,7 +3,7 @@
 @@ -15,6 +15,15 @@
  
  # ************************************************************
- # ***create kernel
+ # *** create kernel
 +# create kernel 4.3.x initrd
 +KER_VER0=`rpm -q kernel | sed -e 's/kernel-//g' | sed -e 's/\.x86_64//'`
 +depmod -a $KER_VER0 >/dev/null ||:
