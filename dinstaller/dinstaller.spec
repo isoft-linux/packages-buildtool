@@ -1,7 +1,7 @@
 Name: dinstaller
 Summary:Installer Application
 Version: 1.0
-Release: 20
+Release: 21
 License: GPL2
 Vendor: iSoft
 Source0: dinstaller.tar.gz
@@ -44,6 +44,9 @@ glib-compile-schemas --allow-any-name usr/share/glib-2.0/schemas ||:
 %{_datadir}/*
 
 %changelog
+* Wed Dec 02 2015 wangming <ming.wang@i-soft.com.cn> - 1.0-21
+- Auto install when matched specify  MAC address.
+
 * Fri Nov 27 2015 wangming <ming.wang@i-soft.com.cn> - 1.0-20
 - Modify licence file.
 
