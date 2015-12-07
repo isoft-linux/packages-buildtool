@@ -1,13 +1,15 @@
 Name: dinstaller
 Summary:Installer Application
 Version: 1.0
-Release: 21
+Release: 22
 License: GPL2
 Vendor: iSoft
 Source0: dinstaller.tar.gz
 Patch0: create-kernel-initrd-4.3-and-4.2.patch
 Patch1: enable_isoftapp.patch
 Patch2: init_rpmdb.patch
+# it will be removed later
+Patch3: umount-livecd.patch
 BuildRequires: git cmake 
 BuildRequires: parted-devel 
 BuildRequires: qt5-qtbase-devel qt5-qttools-devel 
@@ -22,6 +24,7 @@ Requires: parted qt5-qtbase
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
+%patch3 -p1
 
 %build 
 cmake . -DCMAKE_INSTALL_PREFIX=/usr
@@ -44,6 +47,10 @@ glib-compile-schemas --allow-any-name usr/share/glib-2.0/schemas ||:
 %{_datadir}/*
 
 %changelog
+* Mon Dec 07 2015 sulit <sulitsrc@gmail.com> - 1.0-22
+- add umount-livecd patch
+- it will be removed later
+
 * Wed Dec 02 2015 wangming <ming.wang@i-soft.com.cn> - 1.0-21
 - Auto install when matched specify  MAC address.
 
