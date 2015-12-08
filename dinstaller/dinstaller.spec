@@ -1,13 +1,14 @@
 Name: dinstaller
 Summary:Installer Application
 Version: 1.0
-Release: 22
+Release: 23
 License: GPL2
 Vendor: iSoft
 Source0: dinstaller.tar.gz
 Patch0: create-kernel-initrd-4.3-and-4.2.patch
 Patch1: enable_isoftapp.patch
 Patch2: init_rpmdb.patch
+Patch4: modify_baloo_file.desktop.patch
 # it will be removed later
 Patch3: umount-livecd.patch
 BuildRequires: git cmake 
@@ -25,6 +26,7 @@ Requires: parted qt5-qtbase
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
+%patch4 -p1
 
 %build 
 cmake . -DCMAKE_INSTALL_PREFIX=/usr
@@ -47,6 +49,9 @@ glib-compile-schemas --allow-any-name usr/share/glib-2.0/schemas ||:
 %{_datadir}/*
 
 %changelog
+* Tue Dec 08 2015 sulit <sulitsrc@gmail.com> - 1.0-23
+- enable baloo_file patch
+
 * Mon Dec 07 2015 sulit <sulitsrc@gmail.com> - 1.0-22
 - add umount-livecd patch
 - it will be removed later
