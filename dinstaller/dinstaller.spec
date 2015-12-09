@@ -1,7 +1,7 @@
 Name: dinstaller
 Summary:Installer Application
 Version: 1.0
-Release: 23
+Release: 24
 License: GPL2
 Vendor: iSoft
 Source0: dinstaller.tar.gz
@@ -47,8 +47,13 @@ glib-compile-schemas --allow-any-name usr/share/glib-2.0/schemas ||:
 %defattr(-,root,root,-)
 %{_bindir}/*
 %{_datadir}/*
+%{_libdir}/*
+%{_sysconfdir}/*
 
 %changelog
+* Wed Dec 09 2015 <ming.wang@i-soft.com.cn> - 1.0-24
+- Add executable dinstall-cmdline.
+
 * Tue Dec 08 2015 sulit <sulitsrc@gmail.com> - 1.0-23
 - enable baloo_file patch
 
