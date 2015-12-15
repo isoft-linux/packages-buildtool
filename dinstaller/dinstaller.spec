@@ -1,7 +1,7 @@
 Name: dinstaller
 Summary:Installer Application
 Version: 1.0
-Release: 25
+Release: 26
 License: GPL2
 Vendor: iSoft
 Source0: dinstaller.tar.gz
@@ -51,6 +51,9 @@ glib-compile-schemas --allow-any-name usr/share/glib-2.0/schemas ||:
 %{_sysconfdir}/*
 
 %changelog
+* Tue Dec 15 2015 <ming.wang@i-soft.com.cn> - 1.0-26
+- fixed bug 13079.
+
 * Tue Dec 15 2015 <ming.wang@i-soft.com.cn> - 1.0-25
 - Show tip when logical partition renamed.
 
