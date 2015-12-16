@@ -1,7 +1,7 @@
 Name: dinstaller
 Summary:Installer Application
 Version: 1.0
-Release: 26
+Release: 27
 License: GPL2
 Vendor: iSoft
 Source0: dinstaller.tar.gz
@@ -51,6 +51,9 @@ glib-compile-schemas --allow-any-name usr/share/glib-2.0/schemas ||:
 %{_sysconfdir}/*
 
 %changelog
+* Wed Dec 16 2015 <ming.wang@i-soft.com.cn> - 1.0-27
+- Set permission of check-autoins.sh
+
 * Tue Dec 15 2015 <ming.wang@i-soft.com.cn> - 1.0-26
 - fixed bug 13079.
 
