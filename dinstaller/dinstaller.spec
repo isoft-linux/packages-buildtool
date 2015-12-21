@@ -1,16 +1,18 @@
 Name: dinstaller
 Summary:Installer Application
 Version: 1.0
-Release: 28
+Release: 29
 License: GPL2
 Vendor: iSoft
 Source0: dinstaller.tar.gz
 Patch0: create-kernel-initrd-4.3-and-4.2.patch
 Patch1: enable_isoftapp.patch
 Patch2: init_rpmdb.patch
-Patch4: modify_baloo_file.desktop.patch
 # it will be removed later
 Patch3: umount-livecd.patch
+Patch4: modify_baloo_file.desktop.patch
+Patch5: modify_os_name.patch
+Patch6: modify_grub_conf_for_nvidia_and_amd.patch
 BuildRequires: git cmake 
 BuildRequires: parted-devel 
 BuildRequires: qt5-qtbase-devel qt5-qttools-devel 
@@ -27,6 +29,8 @@ Requires: parted qt5-qtbase
 %patch2 -p1
 %patch3 -p1
 %patch4 -p1
+%patch5 -p1
+%patch6 -p1
 
 %build 
 cmake . -DCMAKE_INSTALL_PREFIX=/usr
@@ -51,6 +55,10 @@ glib-compile-schemas --allow-any-name usr/share/glib-2.0/schemas ||:
 %{_sysconfdir}/*
 
 %changelog
+* Mon Dec 21 2015 sulit <sulitsrc@gmail.com> - 1.0-29
+- modify grub conf for nvidia and amd
+- rename os name
+
 * Wed Dec 16 2015 <ming.wang@i-soft.com.cn> - 1.0-28
 - Modify autoins.service.
 

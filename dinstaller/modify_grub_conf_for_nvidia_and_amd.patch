@@ -1,0 +1,31 @@
+--- dinstaller/core/postscript.tmpl	2015-12-21 14:20:10.624664905 +0800
++++ dinstallern/core/postscript.tmpl	2015-12-21 14:17:13.276663931 +0800
+@@ -46,12 +46,28 @@
+     grub-install $GRUB_DEVICE
+     export GRUB_DISTRIBUTOR="iSoft Desktop"
+     export GRUB_DISABLE_RECOVERY=true
++    lspci | grep VGA | grep NVIDIA &> /dev/null
++    FOUND_NVIDIA=$?
++    lspci | grep VGA | grep AMD &> /dev/null || lspci | grep VGA | grep ATI &> /dev/null
++    FOUND_AMD=$?
++
++    if [ $FOUND_NVIDIA -eq 0 -o $FOUND_AMD -eq 0 ]; then
++        sed -e 's|GRUB_GFXPAYLOAD_LINUX=.*|GRUB_GFXPAYLOAD_LINUX="text"|' -i /etc/default/grub
++    fi
+     grub-mkconfig > /boot/grub/grub.cfg
+ else
+     # when no efi
+     grub-install $GRUB_DEVICE
+     export GRUB_DISTRIBUTOR="iSoft Desktop"
+     export GRUB_DISABLE_RECOVERY=true
++    lspci | grep VGA | grep NVIDIA &> /dev/null
++    FOUND_NVIDIA=$?
++    lspci | grep VGA | grep AMD &> /dev/null || lspci | grep VGA | grep ATI &> /dev/null
++    FOUND_AMD=$?
++
++    if [ $FOUND_NVIDIA -eq 0 -o $FOUND_AMD -eq 0 ]; then
++        sed -e 's|GRUB_GFXPAYLOAD_LINUX=.*|GRUB_GFXPAYLOAD_LINUX="text"|' -i /etc/default/grub
++    fi
+     grub-mkconfig > /boot/grub/grub.cfg
+ fi
+ 

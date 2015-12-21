@@ -1,0 +1,18 @@
+--- dinstaller/core/postscript.tmpl	2015-12-21 11:20:28.317605690 +0800
++++ dinstallern/core/postscript.tmpl	2015-12-21 11:21:30.362606031 +0800
+@@ -44,13 +44,13 @@
+ if [ ${EFI_SUPPORT} = true ]; then
+     echo "the grub does not support uefi now"
+     grub-install $GRUB_DEVICE
+-    export GRUB_DISTRIBUTOR="iSoft Enterprise Desktop"
++    export GRUB_DISTRIBUTOR="iSoft Desktop"
+     export GRUB_DISABLE_RECOVERY=true
+     grub-mkconfig > /boot/grub/grub.cfg
+ else
+     # when no efi
+     grub-install $GRUB_DEVICE
+-    export GRUB_DISTRIBUTOR="iSoft Enterprise Desktop"
++    export GRUB_DISTRIBUTOR="iSoft Desktop"
+     export GRUB_DISABLE_RECOVERY=true
+     grub-mkconfig > /boot/grub/grub.cfg
+ fi
