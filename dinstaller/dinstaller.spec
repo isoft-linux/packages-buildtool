@@ -1,7 +1,7 @@
 Name: dinstaller
 Summary:Installer Application
 Version: 1.0
-Release: 29
+Release: 30
 License: GPL2
 Vendor: iSoft
 Source0: dinstaller.tar.gz
@@ -55,6 +55,9 @@ glib-compile-schemas --allow-any-name usr/share/glib-2.0/schemas ||:
 %{_sysconfdir}/*
 
 %changelog
+* Wed Dec 23 2015 <ming.wang@i-soft.com.cn> - 1.0-30
+- Show detail for change of logical partition.
+
 * Mon Dec 21 2015 sulit <sulitsrc@gmail.com> - 1.0-29
 - modify grub conf for nvidia and amd
 - rename os name
