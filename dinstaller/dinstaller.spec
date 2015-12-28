@@ -1,7 +1,7 @@
 Name: dinstaller
 Summary:Installer Application
 Version: 1.0
-Release: 30
+Release: 31
 License: GPL2
 Vendor: iSoft
 Source0: dinstaller.tar.gz
@@ -13,6 +13,8 @@ Patch3: umount-livecd.patch
 Patch4: modify_baloo_file.desktop.patch
 Patch5: modify_os_name.patch
 Patch6: modify_grub_conf_for_nvidia_and_amd.patch
+Patch7: add-mac.patch
+
 BuildRequires: git cmake 
 BuildRequires: parted-devel 
 BuildRequires: qt5-qtbase-devel qt5-qttools-devel 
@@ -31,6 +33,7 @@ Requires: parted qt5-qtbase
 %patch4 -p1
 %patch5 -p1
 %patch6 -p1
+%patch7 -p1
 
 %build 
 cmake . -DCMAKE_INSTALL_PREFIX=/usr
@@ -55,6 +58,9 @@ glib-compile-schemas --allow-any-name usr/share/glib-2.0/schemas ||:
 %{_sysconfdir}/*
 
 %changelog
+* Mon Dec 28 2015 <ming.wang@i-soft.com.cn> - 1.0-31
+- Add mac address for testing automatic install.
+
 * Wed Dec 23 2015 <ming.wang@i-soft.com.cn> - 1.0-30
 - Show detail for change of logical partition.
 

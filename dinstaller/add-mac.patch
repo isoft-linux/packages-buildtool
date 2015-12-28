@@ -1,0 +1,12 @@
+diff --git a/data/check-autoins.sh b/data/check-autoins.sh
+index b6051df..61fabea 100755
+--- a/data/check-autoins.sh
++++ b/data/check-autoins.sh
+@@ -1,6 +1,6 @@
+ #!/bin/bash
+ 
+-MAC_ADDR=("90:b1:1c:6e:2c:1c")
++MAC_ADDR=("90:b1:1c:6e:2c:1c" "c0:3f:d5:ed:40:fd")
+ TESTCMDLINE=0
+ TESTMAC=0
+ 
