@@ -1,0 +1,37 @@
+--- dinstaller/core/postscript.tmpl	2015-12-31 16:43:45.000000000 +0800
++++ dinstallern/core/postscript.tmpl	2016-01-04 11:01:50.129126049 +0800
+@@ -19,12 +19,12 @@
+ # ************************************************************
+ # *** create kernel
+ # create kernel 4.3.x initrd
+-KER_VER0=`rpm -q kernel | sed -e 's/kernel-//g' | sed -e 's/\.x86_64//'`
++KER_VER0=`rpm --os -q kernel | sed -e 's/kernel-//g' | sed -e 's/\.x86_64//'`
+ depmod -a $KER_VER0 >/dev/null ||:
+ dracut -f /boot/initrd-${KER_VER0}.img $KER_VER0 >/dev/null ||:
+ 
+ # create kernel 4.2.x initrd
+-KER_VER1=`rpm -q kernel42 | sed -e 's/kernel42-//g' | sed -e 's/\.x86_64//'`
++KER_VER1=`rpm --os -q kernel42 | sed -e 's/kernel42-//g' | sed -e 's/\.x86_64//'`
+ depmod -a $KER_VER1 >/dev/null ||:
+ dracut -f /boot/initrd-${KER_VER1}.img $KER_VER1 >/dev/null ||:
+ 
+@@ -108,16 +108,13 @@
+ 
+ # ************************************************************
+ # *** uninstall useless packages
+-rpm -q mkinitcpio && rpm -e mkinitcpio
+-rpm -q mkinitcpio-busybox && rpm -e mkinitcpio-busybox
++rpm --os -q mkinitcpio && rpm --os -e mkinitcpio
++rpm --os -q mkinitcpio-busybox && rpm --os -e mkinitcpio-busybox
+ 
+ if which pacman > /dev/null; then
+     pacman -R dinstaller --noconfirm
+     rm -f /etc/skel/桌面/dinstaller.desktop
+     rm -f /usr/share/applications/dinstaller.desktop
+ else
+-    rpm -e dinstaller
++    rpm --os -e dinstaller
+ fi
+-
+-# enable /usr/lib/rpm/isoft/macros %_isoftapp 1
+-sed -e 's/\(%_isoftapp.*\)0/\1 1/' -i /usr/lib/rpm/isoft/macros
