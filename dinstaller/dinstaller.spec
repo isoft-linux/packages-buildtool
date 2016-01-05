@@ -1,12 +1,13 @@
 Name: dinstaller
 Summary:Installer Application
 Version: 1.0
-Release: 35
+Release: 36
 License: GPL2
 Vendor: iSoft
 Source0: dinstaller.tar.gz
 Patch0: replace_rpm_cmd.patch
 Patch1: remove_osmaintaintools_from_os.patch
+Patch2: modify_rpm_reomve_list.patch
 
 BuildRequires: git cmake 
 BuildRequires: parted-devel 
@@ -21,6 +22,7 @@ Requires: parted qt5-qtbase
 %setup -n %{name}
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
 
 %build 
 cmake . -DCMAKE_INSTALL_PREFIX=/usr
@@ -45,6 +47,9 @@ glib-compile-schemas --allow-any-name usr/share/glib-2.0/schemas ||:
 %{_sysconfdir}/*
 
 %changelog
+* Tue Jan 05 2016 sulit <sulitsrc@gmail.com> - 1.0-36
+- modify rpm remove list
+
 * Tue Jan 05 2016 sulit <sulitsrc@gmail.com> - 1.0-35
 - remove osmaintaintools from os
 
