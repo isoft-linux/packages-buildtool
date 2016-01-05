@@ -1,0 +1,14 @@
+--- dinstaller/core/postscript.tmpl	2016-01-05 10:55:16.746093760 +0800
++++ dinstallern/core/postscript.tmpl	2016-01-05 10:57:35.863094524 +0800
+@@ -108,6 +108,11 @@
+ 
+ # ************************************************************
+ # *** uninstall useless packages
++rpm --os -q osmaintain && rpm --os -e osmaintain
++rpm --os -q partclone && rpm --os -e partclone
++rpm --os -q clonezilla && rpm --os -e clonezilla
++rpm --os -q drbl && rpm --os -e drbl
++rpm --os -q partimage && rpm --os -e partimage
+ rpm --os -q mkinitcpio && rpm --os -e mkinitcpio
+ rpm --os -q mkinitcpio-busybox && rpm --os -e mkinitcpio-busybox
+ 
