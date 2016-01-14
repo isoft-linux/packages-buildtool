@@ -1,0 +1,12 @@
+diff -Nur dinstaller/data/licence_zh_CN.html dinstaller-n/data/licence_zh_CN.html
+--- dinstaller/data/licence_zh_CN.html	2015-12-31 09:58:30.000000000 +0800
++++ dinstaller-n/data/licence_zh_CN.html	2016-01-14 11:46:55.931260364 +0800
+@@ -81,7 +81,7 @@
+ 
+ <p class=MsoNormal align=center style='margin-top:7.8pt;margin-right:0cm;
+ margin-bottom:0cm;margin-left:21.0pt;margin-bottom:.0001pt;text-align:center;
+-text-indent:-3.0pt'><span lang=EN-US>(iSoft Client OS EULA)</span></p>
++text-indent:-3.0pt'><span lang=EN-US>(iSoft Desktop OS EULA)</span></p>
+ 
+ <p class=MsoNormal style='margin-top:7.8pt;margin-right:0cm;margin-bottom:0cm;
+ margin-left:126.0pt;margin-bottom:.0001pt;text-indent:21.0pt'><span lang=EN-US
