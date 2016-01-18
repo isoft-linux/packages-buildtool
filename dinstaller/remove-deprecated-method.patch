@@ -1,0 +1,19 @@
+--- dinstaller/core/postscript.tmpl	2016-01-06 18:51:15.000000000 +0800
++++ dinstallern/core/postscript.tmpl	2016-01-18 11:34:00.837044368 +0800
+@@ -99,7 +99,6 @@
+ systemctl enable isoft-install-daemon
+ systemctl disable sddm
+ systemctl enable sddm-plymouth
+-systemctl disable umount-livecd
+ 
+ # ************************************************************
+ # *** if disk is without flag boot, set one
+@@ -116,8 +115,6 @@
+ rpm --os -q partclone && rpm --os -e partclone
+ rpm --os -q drbl && rpm --os -e drbl
+ rpm --os -q partimage && rpm --os -e partimage
+-rpm --os -q mkinitcpio && rpm --os -e mkinitcpio
+-rpm --os -q mkinitcpio-busybox && rpm --os -e mkinitcpio-busybox
+ 
+ if which pacman > /dev/null; then
+     pacman -R dinstaller --noconfirm
