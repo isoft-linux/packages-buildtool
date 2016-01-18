@@ -1,0 +1,24 @@
+--- dinstaller/core/postscript.tmpl	2016-01-18 14:48:11.556524929 +0800
++++ dinstallern/core/postscript.tmpl	2016-01-18 14:50:43.968518134 +0800
+@@ -21,15 +21,16 @@
+ 
+ # ************************************************************
+ # *** create kernel
+-# create kernel 4.3.x initrd
++# create kernel 4.4.x initrd
+ KER_VER0=`rpm --os -q kernel | sed -e 's/kernel-//g' | sed -e 's/\.x86_64//'`
+ depmod -a $KER_VER0 >/dev/null ||:
+ dracut -f /boot/initrd-${KER_VER0}.img $KER_VER0 >/dev/null ||:
+ 
+-# create kernel 4.2.x initrd
+-KER_VER1=`rpm --os -q kernel42 | sed -e 's/kernel42-//g' | sed -e 's/\.x86_64//'`
+-depmod -a $KER_VER1 >/dev/null ||:
+-dracut -f /boot/initrd-${KER_VER1}.img $KER_VER1 >/dev/null ||:
++## we have a stable 4.4.0 kernel, remove other kernel
++# # create kernel 4.2.x initrd
++# KER_VER1=`rpm --os -q kernel42 | sed -e 's/kernel42-//g' | sed -e 's/\.x86_64//'`
++# depmod -a $KER_VER1 >/dev/null ||:
++# dracut -f /boot/initrd-${KER_VER1}.img $KER_VER1 >/dev/null ||:
+ 
+ # Remember Run pwconv
+ pwconv
