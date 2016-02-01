@@ -1,14 +1,10 @@
 Name: dinstaller
 Summary:Installer Application
 Version: 1.0
-Release: 41
+Release: 42
 License: GPL2
 Vendor: iSoft
 Source0: dinstaller.tar.gz
-
-Patch0: licence-changed.patch
-Patch1: remove-deprecated-method.patch
-Patch2: remove_other_kernel.patch
 
 BuildRequires: git cmake 
 BuildRequires: parted-devel 
@@ -21,9 +17,6 @@ Requires: parted qt5-qtbase
 
 %prep
 %setup -n %{name}
-%patch0 -p1
-%patch1 -p1
-%patch2 -p1
 
 %build 
 cmake . -DCMAKE_INSTALL_PREFIX=/usr
@@ -48,6 +41,9 @@ glib-compile-schemas --allow-any-name usr/share/glib-2.0/schemas ||:
 %{_sysconfdir}/*
 
 %changelog
+* Mon Feb 01 2016 <ming.wang@i-soft.com.cn> - 1.0-42
+- show production description on progress page.
+
 * Mon Jan 18 2016 sulit <sulitsrc@gmail.com> - 1.0-41
 - remove other kernel, because we have a stable 4.4.0 kernel
 
