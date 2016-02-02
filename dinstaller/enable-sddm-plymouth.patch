@@ -1,0 +1,12 @@
+diff -Nur dinstaller/core/postscript.tmpl dinstaller-n/core/postscript.tmpl
+--- dinstaller/core/postscript.tmpl	2016-02-01 15:48:32.000000000 +0800
++++ dinstaller-n/core/postscript.tmpl	2016-02-02 15:34:50.244556603 +0800
+@@ -98,7 +98,7 @@
+ systemctl enable isoft-update-daemon
+ systemctl enable repairdev
+ systemctl enable isoft-install-daemon
+-systemctl disable sddm-plymouth
++systemctl enable sddm-plymouth
+ 
+ # ************************************************************
+ # *** if disk is without flag boot, set one
