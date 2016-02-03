@@ -1,12 +1,10 @@
 Name: dinstaller
 Summary:Installer Application
 Version: 1.0
-Release: 44
+Release: 45
 License: GPL2
 Vendor: iSoft
 Source0: dinstaller.tar.gz
-
-Patch0: enable-sddm-plymouth.patch
 
 BuildRequires: git cmake 
 BuildRequires: parted-devel 
@@ -19,7 +17,6 @@ Requires: parted qt5-qtbase
 
 %prep
 %setup -n %{name}
-%patch0 -p1
 
 %build 
 cmake . -DCMAKE_INSTALL_PREFIX=/usr
@@ -44,6 +41,9 @@ glib-compile-schemas --allow-any-name usr/share/glib-2.0/schemas ||:
 %{_sysconfdir}/*
 
 %changelog
+* Wed Feb 03 2016 <ming.wang@i-soft.com.cn> - 1.0-45
+- use parallel animation to improving visual.
+
 * Tue Feb 02 2016 <ming.wang@i-soft.com.cn> - 1.0-44
 - enable sddm-plymouth.
 
