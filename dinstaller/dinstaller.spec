@@ -1,7 +1,7 @@
 Name: dinstaller
 Summary:Installer Application
 Version: 1.0
-Release: 45
+Release: 46
 License: GPL2
 Vendor: iSoft
 Source0: dinstaller.tar.gz
@@ -44,7 +44,7 @@ glib-compile-schemas --allow-any-name usr/share/glib-2.0/schemas ||:
 %{_sysconfdir}/*
 
 %changelog
-* Wed Feb 03 2016 <ming.wang@i-soft.com.cn> - 1.0-45
+* Wed Feb 03 2016 <ming.wang@i-soft.com.cn> - 1.0-46
 - use parallel animation to improving visual.
 
 * Tue Feb 02 2016 test - 1.0-45
