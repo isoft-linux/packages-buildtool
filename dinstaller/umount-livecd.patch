@@ -1,10 +1,12 @@
---- dinstaller/core/postscript.tmpl	2015-11-27 10:53:25.000000000 +0800
-+++ dinstallern/core/postscript.tmpl	2015-12-07 17:50:45.077764471 +0800
-@@ -65,6 +65,7 @@
+--- dinstaller/core/postscript.tmpl	2016-02-02 17:53:37.636847728 +0800
++++ dinstallern/core/postscript.tmpl	2016-02-02 18:00:34.588829139 +0800
+@@ -99,6 +99,9 @@
+ systemctl enable repairdev
  systemctl enable isoft-install-daemon
- systemctl disable sddm
  systemctl enable sddm-plymouth
 +systemctl disable umount-livecd
++rm -f /usr/lib/systemd/system/umount-livecd.service
++rm -f /usr/lib/systemd/scripts/umount-livecd.sh
  
  # ************************************************************
  # *** if disk is without flag boot, set one

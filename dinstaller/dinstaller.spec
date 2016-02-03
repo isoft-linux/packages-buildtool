@@ -6,6 +6,8 @@ License: GPL2
 Vendor: iSoft
 Source0: dinstaller.tar.gz
 
+patch1: umount-livecd.patch
+
 BuildRequires: git cmake 
 BuildRequires: parted-devel 
 BuildRequires: qt5-qtbase-devel qt5-qttools-devel 
@@ -17,6 +19,7 @@ Requires: parted qt5-qtbase
 
 %prep
 %setup -n %{name}
+%patch1 -p1
 
 %build 
 cmake . -DCMAKE_INSTALL_PREFIX=/usr
@@ -43,6 +46,9 @@ glib-compile-schemas --allow-any-name usr/share/glib-2.0/schemas ||:
 %changelog
 * Wed Feb 03 2016 <ming.wang@i-soft.com.cn> - 1.0-45
 - use parallel animation to improving visual.
+
+* Tue Feb 02 2016 test - 1.0-45
+- add umount-livecd.patch
 
 * Tue Feb 02 2016 <ming.wang@i-soft.com.cn> - 1.0-44
 - enable sddm-plymouth.
