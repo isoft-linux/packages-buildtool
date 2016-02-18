@@ -1,14 +1,14 @@
 # sitelib for noarch packages, sitearch for others (remove the unneeded one)
 %{!?python_sitelib: %global python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")}
+%define pkgver 09288ef08188ba9406da9e04fe93ca98
 
 Name:           rpkg
-Version:        1.39
 Release:        1%{?dist}
 Summary:        Utility for interacting with rpm+git packaging systems
 
 License:        GPLv2+ and LGPLv2
 URL:            https://fedorahosted.org/rpkg
-Source0:        http://pkgs.isoft.zhcn.cc/repo/pkgs/rpkg/rpkg-%{version}.tar.gz/6249462be46000ee938e0865f6456a16/rpkg-%{version}.tar.gz
+Source0:        http://pkgs.isoft.zhcn.cc/repo/pkgs/rpkg/rpkg-%{version}.tar.gz/%{pkgver}/rpkg-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 Requires:       python
@@ -26,6 +26,7 @@ BuildRequires:  python-kitchen
 BuildRequires:  python-nose
 BuildRequires:  python-mock
 BuildRequires:  osbs
+BuildRequires:  bash-completion
 
 %description
 A tool for managing RPM package sources in a git repository.
