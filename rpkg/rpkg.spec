@@ -3,6 +3,7 @@
 %define pkgver 09288ef08188ba9406da9e04fe93ca98
 
 Name:           rpkg
+Version:        1.39
 Release:        1%{?dist}
 Summary:        Utility for interacting with rpm+git packaging systems
 
