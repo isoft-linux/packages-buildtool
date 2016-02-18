@@ -2,8 +2,8 @@
 %{!?python_sitelib: %global python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")}
 
 Name:           rpkg
-Version:        1.38
-Release:        2
+Version:        1.39
+Release:        1%{?dist}
 Summary:        Utility for interacting with rpm+git packaging systems
 
 License:        GPLv2+ and LGPLv2
@@ -80,6 +80,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Thu Feb 18 2016 xiaotian.wu@i-soft.com.cn - 1.39-1
+- new version
+
 * Mon Oct 26 2015 Cjacker <cjacker@foxmail.com> - 1.38-2
 - Rebuild for new 4.0 release
 
