@@ -4,7 +4,7 @@
 
 Name:           rpkg
 Version:        1.39
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Utility for interacting with rpm+git packaging systems
 
 License:        GPLv2+ and LGPLv2
@@ -82,6 +82,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Thu Feb 18 2016 xiaotian.wu@i-soft.com.cn - 1.39-2
+- rebuilt
+
 * Thu Feb 18 2016 xiaotian.wu@i-soft.com.cn - 1.39-1
 - new version
 
