@@ -1,10 +1,10 @@
 # sitelib for noarch packages, sitearch for others (remove the unneeded one)
 %{!?python_sitelib: %global python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")}
-%define checksum 7db1ceb24d83c2e8b184fbf812e7cff8
+%define checksum 7d7841c8d6b73dc8e402559413f1ce91
 
 Name:           mpkg
-Version:        1.24
-Release:        1
+Version:        1.25
+Release:        1%{?dist}
 Summary:        Moses utility for working with dist-git
 
 License:        GPLv2+
@@ -56,6 +56,9 @@ rm -rf $RPM_BUILD_ROOT
 %{python_sitelib}/*
 
 %changelog
+* Thu Feb 18 2016 xiaotian.wu@i-soft.com.cn - 1.25-1
+- new version
+
 * Tue Nov 10 2015 xiaotian.wu@i-soft.com.cn - 1.24-1
 - new version, add search command.
 
