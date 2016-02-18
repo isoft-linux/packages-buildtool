@@ -4,7 +4,7 @@
 
 Name:           mpkg
 Version:        1.25
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Moses utility for working with dist-git
 
 License:        GPLv2+
@@ -56,6 +56,9 @@ rm -rf $RPM_BUILD_ROOT
 %{python_sitelib}/*
 
 %changelog
+* Thu Feb 18 2016 xiaotian.wu@i-soft.com.cn - 1.25-2
+- rebuilt
+
 * Thu Feb 18 2016 xiaotian.wu@i-soft.com.cn - 1.25-1
 - new version
 
