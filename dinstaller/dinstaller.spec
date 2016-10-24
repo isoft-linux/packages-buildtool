@@ -1,7 +1,7 @@
 Name: dinstaller
 Summary:Installer Application
 Version: 1.0
-Release: 46
+Release: 47
 License: GPL2
 Vendor: iSoft
 Source0: dinstaller.tar.gz
@@ -44,6 +44,9 @@ glib-compile-schemas --allow-any-name usr/share/glib-2.0/schemas ||:
 %{_sysconfdir}/*
 
 %changelog
+* Mon Oct 24 2016 x <ming.wang@i-soft.com.cn> - 1.0-47
+- Don't create swap partition when space is not enough.
+
 * Wed Feb 03 2016 <ming.wang@i-soft.com.cn> - 1.0-46
 - use parallel animation to improving visual.
 
