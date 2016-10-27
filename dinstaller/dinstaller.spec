@@ -49,7 +49,7 @@ glib-compile-schemas --allow-any-name usr/share/glib-2.0/schemas ||:
 %{_datadir}/polkit-1/actions/*
 
 %changelog
-* Mon Oct 27 2016 x <ming.wang@i-soft.com.cn> - 1.0-49
+* Thu Oct 27 2016 x <ming.wang@i-soft.com.cn> - 1.0-49
 - Use kdesu instead of pkexec. Fixed install error.
 
 * Mon Oct 24 2016 x <ming.wang@i-soft.com.cn> - 1.0-47
