@@ -1,7 +1,7 @@
 Name: dinstaller
 Summary:Installer Application
 Version: 1.0
-Release: 48
+Release: 50
 License: GPL2
 Vendor: iSoft
 Source0: dinstaller.tar.gz
@@ -49,8 +49,11 @@ glib-compile-schemas --allow-any-name usr/share/glib-2.0/schemas ||:
 %{_datadir}/polkit-1/actions/*
 
 %changelog
-* Thu Oct 27 2016 x <ming.wang@i-soft.com.cn> - 1.0-48
+* Thu Oct 27 2016 x <ming.wang@i-soft.com.cn> - 1.0-50
 - Use kdesu instead of pkexec. Fixed install error.
+
+* Mon Oct 24 2016 x <ming.wang@i-soft.com.cn> - 1.0-48
+- Don't create swap partition when space is not enough.
 
 * Wed Feb 03 2016 <ming.wang@i-soft.com.cn> - 1.0-46
 - use parallel animation to improving visual.
