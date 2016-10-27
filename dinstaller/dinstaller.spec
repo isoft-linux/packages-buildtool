@@ -7,6 +7,7 @@ Vendor: iSoft
 Source0: dinstaller.tar.gz
 
 patch1: umount-livecd.patch
+Patch2: use-kdesu.patch
 
 BuildRequires: git cmake 
 BuildRequires: parted-devel 
@@ -20,6 +21,7 @@ Requires: parted qt5-qtbase
 %prep
 %setup -n %{name}
 %patch1 -p1
+%patch2 -p1
 
 %build 
 cmake . -DCMAKE_INSTALL_PREFIX=/usr
