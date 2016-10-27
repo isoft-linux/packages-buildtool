@@ -1,0 +1,11 @@
+diff -Nur dinstaller/data/run-dinstaller.sh dinstaller-n/data/run-dinstaller.sh
+--- dinstaller/data/run-dinstaller.sh	2016-10-20 18:56:39.000000000 +0800
++++ dinstaller-n/data/run-dinstaller.sh	2016-10-27 19:40:03.375701290 +0800
+@@ -3,6 +3,6 @@
+ sudo mkdir -p /run/fs
+ sudo mount /run/initramfs/live/isoft/x86_64/root-image.fs.sfs /run/fs
+ ks-activation &
+-pkuexec dinstaller
++kdesu dinstaller
+ pkill ks-activation
+ sudo umount /run/fs
