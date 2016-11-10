@@ -1,13 +1,12 @@
 Name: dinstaller
 Summary:Installer Application
 Version: 1.0
-Release: 49
+Release: 51
 License: GPL2
 Vendor: iSoft
 Source0: dinstaller.tar.gz
 
 patch1: umount-livecd.patch
-Patch2: use-kdesu.patch
 
 BuildRequires: git cmake 
 BuildRequires: parted-devel 
@@ -21,7 +20,6 @@ Requires: parted qt5-qtbase
 %prep
 %setup -n %{name}
 %patch1 -p1
-%patch2 -p1
 
 %build 
 cmake . -DCMAKE_INSTALL_PREFIX=/usr
@@ -49,6 +47,9 @@ glib-compile-schemas --allow-any-name usr/share/glib-2.0/schemas ||:
 %{_datadir}/polkit-1/actions/*
 
 %changelog
+* Thu Nov 10 2016 x - 1.0-52
+- Create the first parttition start with 2048 sector.
+
 * Thu Oct 27 2016 x <ming.wang@i-soft.com.cn> - 1.0-49
 - Use kdesu instead of pkexec. Fixed install error.
 
