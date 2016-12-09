@@ -1,15 +1,14 @@
 Name: dinstaller
 Summary:Installer Application
 Version: 1.0
-Release: 50
+Release: 53
 License: GPL2
 Vendor: iSoft
 Source0: dinstaller.tar.gz
 
 patch1: umount-livecd.patch
-Patch2: use-kdesu.patch
 
-BuildRequires: git cmake 
+BuildRequires: git cmake
 BuildRequires: parted-devel 
 BuildRequires: qt5-qtbase-devel qt5-qttools-devel 
 BuildRequires: mesa-libGL-devel mesa-libgbm-devel libGLU-devel
@@ -21,16 +20,13 @@ Requires: parted qt5-qtbase
 %prep
 %setup -n %{name}
 %patch1 -p1
-%patch2 -p1
 
 %build 
 cmake . -DCMAKE_INSTALL_PREFIX=/usr
 make
 
-
 %install
 make GCONF_DISABLE_MAKEFILE_SCHEMA_INSTALL=1 DESTDIR=%{buildroot} install
-
 
 %post
 glib-compile-schemas --allow-any-name usr/share/glib-2.0/schemas ||:
@@ -49,6 +45,9 @@ glib-compile-schemas --allow-any-name usr/share/glib-2.0/schemas ||:
 %{_datadir}/polkit-1/actions/*
 
 %changelog
+* Fri Dec 09 2016 x - 1.0-53
+- Fix bug:about bios_grub.
+
 * Thu Oct 27 2016 x <ming.wang@i-soft.com.cn> - 1.0-50
 - Use kdesu instead of pkexec. Fixed install error.
 
